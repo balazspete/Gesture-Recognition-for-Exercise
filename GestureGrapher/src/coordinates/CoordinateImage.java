@@ -89,7 +89,7 @@ public class CoordinateImage extends BufferedImage {
 	}
 	
 	private double calculatePoint(double point, double[] stats, double factor) {
-		return (point - stats[0]) * factor + 5;
+		return height - ((point - stats[0]) * factor + 5);
 	}
 	
 	private void separateCoordinates(Vector<Double> x, Vector<Double> y, Vector<Double> z) {
