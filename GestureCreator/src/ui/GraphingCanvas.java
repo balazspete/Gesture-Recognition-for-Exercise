@@ -24,7 +24,8 @@ public class GraphingCanvas extends JPanel {
 	private StateImage simage = null;
 	private boolean cursor = false;
 	private int mouseXLocation = -1;
-	private int mouseYLocation;
+	private int mouseYLocation = -1;
+	private int savedMouseYLocation = -1;
 	
 	public GraphingCanvas() {
 		image = new GraphingImage();
@@ -89,6 +90,13 @@ public class GraphingCanvas extends JPanel {
             g2.setColor(Color.red);
             g2.draw(line2);
         }
+        
+        if(savedMouseYLocation >= 0) {
+        	Line2D line = new Line2D.Double(0, savedMouseYLocation, this.getHeight(), savedMouseYLocation);
+            g2.setColor(Color.pink);
+            g2.setStroke(new BasicStroke(1));
+            g2.draw(line);
+        }
 	}
 
 	public void updateMouseLocation(MouseEvent e){
@@ -117,6 +125,14 @@ public class GraphingCanvas extends JPanel {
 	
 	public void setCursorVisibility(boolean visible) {
 		cursor = visible;
+		if(!visible) savedMouseYLocation = -1;
 	}
 	
+	public int getSavedMouseYLocation() {
+		return savedMouseYLocation;
+	}
+	
+	public void saveMouseYLocation() {
+		savedMouseYLocation = mouseYLocation;
+	}
 }

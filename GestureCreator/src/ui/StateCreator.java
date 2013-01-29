@@ -31,6 +31,7 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Window.Type;
 
 public class StateCreator extends JFrame {
 
@@ -57,6 +58,9 @@ public class StateCreator extends JFrame {
 	 * Create the frame.
 	 */
 	public StateCreator() {
+		setOpacity(0.6f);
+		setType(Type.UTILITY);
+		setResizable(false);
 		initialize(0);
 	}
 	
@@ -77,7 +81,7 @@ public class StateCreator extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				removePoint();
+				canvas.getSimage().setTemporary(null);
 			}
 		});
 
@@ -300,7 +304,7 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.EAST, btnRefresh, 0, SpringLayout.EAST, spinner);
 		contentPane.add(btnRefresh);
 		
-		JButton btnXAxisEdit = new JButton("edit");
+		JButton btnXAxisEdit = new JButton("add");
 		btnXAxisEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -312,7 +316,7 @@ public class StateCreator extends JFrame {
 		contentPane.add(btnXAxisEdit);
 		buttonToSpinner.put(btnXAxisEdit, spinnerXValue);
 		
-		JButton btnYAxisEdit = new JButton("edit");
+		JButton btnYAxisEdit = new JButton("add");
 		btnYAxisEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -324,7 +328,7 @@ public class StateCreator extends JFrame {
 		contentPane.add(btnYAxisEdit);
 		buttonToSpinner.put(btnYAxisEdit, spinnerYValue);
 		
-		JButton btnZAxisEdit = new JButton("edit");
+		JButton btnZAxisEdit = new JButton("add");
 		btnZAxisEdit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -381,6 +385,8 @@ public class StateCreator extends JFrame {
 		Object value = spinnerIndex.getValue();
 		img.addPoint(img.getTemporary(), 
 				value instanceof Integer ? (int) value : (int)(double) value);
+		canvas.getSimage().setTemporary(null);
+		this.dispose();
 	}
 	
 	private void removePoint() {
@@ -388,5 +394,9 @@ public class StateCreator extends JFrame {
 		this.dispose();
 	}
 	
-	
+	private void addPointElement(JButton button, MouseEvent e) {
+		double height = canvas.getHeight();
+		double value = ((height - canvas.getSavedMouseYLocation()) / height) * 100;
+		buttonToSpinner.get(button).setValue(value);
+	}
 }

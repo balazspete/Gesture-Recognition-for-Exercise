@@ -25,6 +25,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.Savepoint;
 import java.util.Vector;
 
 import javax.swing.JSpinner;
@@ -34,6 +35,8 @@ import javax.swing.JCheckBox;
 
 import model.state.FuzzyPoint;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MainWindow {
 
@@ -111,6 +114,8 @@ public class MainWindow {
 				if(stateCreator == null || !stateCreator.isShowing()) {
 					stateCreator = new StateCreator(canvas, statePoints, (((double)e.getX()) / canvas.getWidth()) * 100);
 					stateCreator.setVisible(true);
+				} else {
+					canvas.saveMouseYLocation();
 				}
 			}
 		});
