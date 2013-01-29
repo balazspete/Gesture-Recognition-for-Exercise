@@ -41,6 +41,8 @@ public class StateCreator extends JFrame {
 	private JSpinner spinnerYValue;
 	private JSpinner spinnerXErrorValue;
 	private JSpinner spinnerXValue;
+	private JSpinner spinner;
+	private JSpinner spinnerIndex;
 
 	/**
 	 * Create the frame.
@@ -69,10 +71,13 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblVerticalDisplacement, 10, SpringLayout.WEST, contentPane);
 		contentPane.add(lblVerticalDisplacement);
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 0.0001));
 		sl_contentPane.putConstraint(SpringLayout.NORTH, spinner, -6, SpringLayout.NORTH, lblVerticalDisplacement);
 		sl_contentPane.putConstraint(SpringLayout.WEST, spinner, 87, SpringLayout.EAST, lblVerticalDisplacement);
 		sl_contentPane.putConstraint(SpringLayout.EAST, spinner, -5, SpringLayout.EAST, contentPane);
+		JSpinner.NumberEditor editor = (JSpinner.NumberEditor)spinner.getEditor();  
+        DecimalFormat format = editor.getFormat();  
+        format.setMinimumFractionDigits(4);
 		contentPane.add(spinner);
 		
 		chckbxXaxis = new JCheckBox("X-axis");
@@ -108,8 +113,8 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblXValue, 6, SpringLayout.NORTH, spinnerXValue);
 		sl_contentPane.putConstraint(SpringLayout.WEST, spinnerXValue, 0, SpringLayout.WEST, spinner);
 		sl_contentPane.putConstraint(SpringLayout.EAST, spinnerXValue, -5, SpringLayout.EAST, contentPane);
-		JSpinner.NumberEditor editor = (JSpinner.NumberEditor)spinnerXValue.getEditor();  
-        DecimalFormat format = editor.getFormat();  
+		editor = (JSpinner.NumberEditor)spinnerXValue.getEditor();  
+        format = editor.getFormat();  
         format.setMinimumFractionDigits(4);
 		contentPane.add(spinnerXValue);
 		
@@ -247,14 +252,14 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnDiscard, 0, SpringLayout.SOUTH, btnSave);
 		contentPane.add(btnDiscard);
 		
-		JSpinner spinner_1 = new JSpinner();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, spinner_1, 6, SpringLayout.SOUTH, spinner);
-		sl_contentPane.putConstraint(SpringLayout.WEST, spinner_1, 0, SpringLayout.WEST, spinner);
-		sl_contentPane.putConstraint(SpringLayout.EAST, spinner_1, 0, SpringLayout.EAST, spinner);
-		contentPane.add(spinner_1);
+		spinnerIndex = new JSpinner();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, spinnerIndex, 6, SpringLayout.SOUTH, spinner);
+		sl_contentPane.putConstraint(SpringLayout.WEST, spinnerIndex, 0, SpringLayout.WEST, spinner);
+		sl_contentPane.putConstraint(SpringLayout.EAST, spinnerIndex, 0, SpringLayout.EAST, spinner);
+		contentPane.add(spinnerIndex);
 		
 		JLabel lblPosition = new JLabel("Index");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblPosition, 6, SpringLayout.NORTH, spinner_1);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblPosition, 6, SpringLayout.NORTH, spinnerIndex);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblPosition, 0, SpringLayout.WEST, lblVerticalDisplacement);
 		contentPane.add(lblPosition);
 	}
@@ -279,6 +284,9 @@ public class StateCreator extends JFrame {
 			p.setZ(getFuzzyNumberFromValue(spinnerZValue.getValue(), spinnerZErrorValue.getValue()));
 		}
 		
+		Object value = spinner.getValue();
+		p.setHorizontalAlignment(value instanceof Integer ? (int) value : (double) value);
+		
 		return p;
 	}
 	
@@ -296,7 +304,10 @@ public class StateCreator extends JFrame {
 	}
 	
 	private void savePoint() {
-		
+		StateImage img = canvas.getSimage();
+		Object value = spinnerIndex.getValue();
+		img.addPoint(img.getTemporary(), 
+				value instanceof Integer ? (int) value : (int)(double) value);
 	}
 	
 	private void removePoint() {

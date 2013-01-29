@@ -3,20 +3,15 @@ package ui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import javax.swing.JLabel;
 import javax.swing.Box;
-import javax.swing.JList;
 
 import coordinates.CoordinateSeries;
 import coordinates.GraphData;
@@ -30,14 +25,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Vector;
 
 import javax.swing.JSpinner;
-import java.awt.FlowLayout;
 import javax.swing.SpringLayout;
-import javax.swing.JSeparator;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 

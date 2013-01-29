@@ -43,7 +43,6 @@ public class StateImage extends BufferedImage {
 		}
 		
 		if(temporary != null) {
-			System.out.println("Drawing temporary");
 			for(FuzzyNumber n : temporary.getValues()) {
 				drawPoint(n, temporary, g2);
 			}
@@ -51,12 +50,19 @@ public class StateImage extends BufferedImage {
 	}
 	
 	private void drawPoint(FuzzyNumber n, FuzzyPoint p, Graphics2D g2) {
-		double e = n.getError() / 2;
-		Ellipse2D e1 = new Ellipse2D.Double(p.getHorizontalAlignment() * getWidth(), getHeight() * (1 - n.getValue()), 3, 2);
+		double e = ((n.getError() / 100) * getWidth()) / 2;
+		Ellipse2D e1 = new Ellipse2D.Double(
+				(p.getHorizontalAlignment() / 100) * getWidth(), 
+				getHeight() - (n.getValue() / 100) * getHeight(), 
+				2, 2);
 		g2.setColor(new Color(0, 212, 255));
 		g2.fill(e1);
-		Ellipse2D e2 = new Ellipse2D.Double(p.getHorizontalAlignment() * getWidth() - e, getHeight() * (1 - n.getValue() + e), n.getError(), n.getError());
-		g2.setColor(new Color(0, 212, 255, 150));
+		double error = (n.getError() / 100) * getHeight();
+		Ellipse2D e2 = new Ellipse2D.Double(
+				(p.getHorizontalAlignment() / 100) * getWidth() - e, 
+				getHeight() - (n.getValue() / 100) * getHeight() - e, 
+				error, error);
+		g2.setColor(new Color(0, 212, 255, 70));
 		g2.fill(e2);
 	}
 
@@ -70,6 +76,18 @@ public class StateImage extends BufferedImage {
 
 	public void setTemporary(FuzzyPoint temporary) {
 		this.temporary = temporary;
+	}
+	
+	public void addPoint(FuzzyPoint point, int index) {
+		if(index >= points.size()) {
+			points.add(point);
+		} else {
+			points.add(index, point);
+		}
+	}
+	
+	public void removePoint(int index) {
+		points.remove(index);
 	}
 	
 	
