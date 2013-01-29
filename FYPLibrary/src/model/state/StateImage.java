@@ -8,8 +8,31 @@ import java.util.Vector;
 
 public class StateImage extends BufferedImage {
 	
+	private class ColorChooser {
+		@SuppressWarnings("serial")
+		private int count = 0;
+		private Color[] colors = new Color[] {
+			new Color(0, 212, 255), new Color(0, 212, 255, 70),
+			new Color(145, 255, 0), new Color(145, 255, 0, 70),
+			new Color(255, 162, 0), new Color(255, 162, 0, 70)
+		};
+		
+		public ColorChooser() {}
+		
+		public Color getColor() {
+			Color c = colors[count];
+			count = (++count)%colors.length;
+			return c;
+		}
+		
+		public void resetCounter() {
+			count = 0;
+		}
+	}
+	
 	private Vector<FuzzyPoint> points = new Vector<FuzzyPoint>();
 	private FuzzyPoint temporary = null;
+	private ColorChooser chooser = new ColorChooser();
 
 	public StateImage() {
 		super(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -40,12 +63,14 @@ public class StateImage extends BufferedImage {
 			for(FuzzyNumber n : point.getValues()) {
 				drawPoint(n, point, g2);
 			}
+			chooser.resetCounter();
 		}
 		
 		if(temporary != null) {
 			for(FuzzyNumber n : temporary.getValues()) {
 				drawPoint(n, temporary, g2);
 			}
+			chooser.resetCounter();
 		}
 	}
 	
@@ -55,14 +80,14 @@ public class StateImage extends BufferedImage {
 				(p.getHorizontalAlignment() / 100) * getWidth(), 
 				getHeight() - (n.getValue() / 100) * getHeight(), 
 				2, 2);
-		g2.setColor(new Color(0, 212, 255));
+		g2.setColor(chooser.getColor());
 		g2.fill(e1);
 		double error = (n.getError() / 100) * getHeight();
 		Ellipse2D e2 = new Ellipse2D.Double(
 				(p.getHorizontalAlignment() / 100) * getWidth() - e, 
 				getHeight() - (n.getValue() / 100) * getHeight() - e, 
 				error, error);
-		g2.setColor(new Color(0, 212, 255, 70));
+		g2.setColor(chooser.getColor());
 		g2.fill(e2);
 	}
 

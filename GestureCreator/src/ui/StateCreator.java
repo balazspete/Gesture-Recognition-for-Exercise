@@ -25,13 +25,22 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class StateCreator extends JFrame {
 
 	private JPanel contentPane;
 	private GraphingCanvas canvas = null;
+	
 	private Map<JCheckBox, JSpinner[]> checkboxToSpinner = new HashMap<JCheckBox, JSpinner[]>();
-	Vector<FuzzyPoint> points = null;
+	private Map<JButton, JSpinner> buttonToSpinner = new HashMap<JButton, JSpinner>();
+	private Vector<FuzzyPoint> points = null;
+	
 	private JCheckBox chckbxZaxis;
 	private JCheckBox chckbxYaxis;
 	private JCheckBox chckbxXaxis;
@@ -48,16 +57,30 @@ public class StateCreator extends JFrame {
 	 * Create the frame.
 	 */
 	public StateCreator() {
-		initialize();
+		initialize(0);
 	}
 	
 	public StateCreator(GraphingCanvas canvas, Vector<FuzzyPoint> points) {
-		initialize();
+		initialize(0);
 		this.canvas = canvas;
 		this.points = points;
 	}
 	
-	private void initialize() {
+	public StateCreator(GraphingCanvas canvas, Vector<FuzzyPoint> points, double horizontalPosition) {
+		initialize(horizontalPosition);
+		this.canvas = canvas;
+		this.points = points;
+		updateImage();
+	}
+	
+	private void initialize(double horizontalPosition) {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				removePoint();
+			}
+		});
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 400, 435);
 		contentPane = new JPanel();
@@ -71,7 +94,13 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblVerticalDisplacement, 10, SpringLayout.WEST, contentPane);
 		contentPane.add(lblVerticalDisplacement);
 		
-		spinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 0.0001));
+		spinner = new JSpinner(new SpinnerNumberModel(horizontalPosition, 0, 100, 0.0001));
+		spinner.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				updateImage();
+			}
+		});
 		sl_contentPane.putConstraint(SpringLayout.NORTH, spinner, -6, SpringLayout.NORTH, lblVerticalDisplacement);
 		sl_contentPane.putConstraint(SpringLayout.WEST, spinner, 87, SpringLayout.EAST, lblVerticalDisplacement);
 		sl_contentPane.putConstraint(SpringLayout.EAST, spinner, -5, SpringLayout.EAST, contentPane);
@@ -87,7 +116,6 @@ public class StateCreator extends JFrame {
 				enableAxis((JCheckBox)e.getSource());
 			}
 		});
-		chckbxXaxis.setSelected(true);
 		chckbxXaxis.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		contentPane.add(chckbxXaxis);
 		
@@ -100,7 +128,6 @@ public class StateCreator extends JFrame {
 				enableAxis((JCheckBox)e.getSource());
 			}
 		});
-		chckbxYaxis.setSelected(true);
 		chckbxYaxis.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		contentPane.add(chckbxYaxis);
 		
@@ -187,7 +214,6 @@ public class StateCreator extends JFrame {
 				enableAxis((JCheckBox)e.getSource());
 			}
 		});
-		chckbxZaxis.setSelected(true);
 		chckbxZaxis.setFont(new Font("Lucida Grande", Font.BOLD, 13));
 		contentPane.add(chckbxZaxis);
 		
@@ -236,7 +262,7 @@ public class StateCreator extends JFrame {
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				updateImage();
+				savePoint();
 			}
 		});
 		contentPane.add(btnSave);
@@ -262,6 +288,53 @@ public class StateCreator extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblPosition, 6, SpringLayout.NORTH, spinnerIndex);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblPosition, 0, SpringLayout.WEST, lblVerticalDisplacement);
 		contentPane.add(lblPosition);
+		
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				updateImage();
+			}
+		});
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnRefresh, 0, SpringLayout.SOUTH, btnSave);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnRefresh, 0, SpringLayout.EAST, spinner);
+		contentPane.add(btnRefresh);
+		
+		JButton btnXAxisEdit = new JButton("edit");
+		btnXAxisEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				addPointElement((JButton)e.getSource(), e);
+			}
+		});
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnXAxisEdit, 0, SpringLayout.NORTH, chckbxXaxis);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnXAxisEdit, 6, SpringLayout.EAST, chckbxXaxis);
+		contentPane.add(btnXAxisEdit);
+		buttonToSpinner.put(btnXAxisEdit, spinnerXValue);
+		
+		JButton btnYAxisEdit = new JButton("edit");
+		btnYAxisEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				addPointElement((JButton)e.getSource(), e);
+			}
+		});
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnYAxisEdit, -1, SpringLayout.NORTH, chckbxYaxis);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnYAxisEdit, 6, SpringLayout.EAST, chckbxYaxis);
+		contentPane.add(btnYAxisEdit);
+		buttonToSpinner.put(btnYAxisEdit, spinnerYValue);
+		
+		JButton btnZAxisEdit = new JButton("edit");
+		btnZAxisEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				addPointElement((JButton)e.getSource(), e);
+			}
+		});
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnZAxisEdit, -1, SpringLayout.NORTH, chckbxZaxis);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnZAxisEdit, 6, SpringLayout.EAST, chckbxZaxis);
+		contentPane.add(btnZAxisEdit);
+		buttonToSpinner.put(btnZAxisEdit, spinnerZValue);
 	}
 	
 	private void enableAxis(JCheckBox chckbx) {
@@ -311,6 +384,9 @@ public class StateCreator extends JFrame {
 	}
 	
 	private void removePoint() {
-		
+		canvas.getSimage().setTemporary(null);
+		this.dispose();
 	}
+	
+	
 }

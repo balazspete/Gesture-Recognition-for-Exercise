@@ -33,6 +33,7 @@ import java.awt.Font;
 import javax.swing.JCheckBox;
 
 import model.state.FuzzyPoint;
+import java.awt.event.MouseMotionAdapter;
 
 public class MainWindow {
 
@@ -49,7 +50,7 @@ public class MainWindow {
 	private JSpinner spinnerVerticalScaling;
 	private JLabel lblSelectedFilePath;
 	
-	private StateCreator stateCreator;
+	private StateCreator stateCreator = null;
 	
 	private Vector<FuzzyPoint> statePoints = new Vector<FuzzyPoint>();
 	
@@ -104,6 +105,21 @@ public class MainWindow {
 		panel_1.add(scrollPane_1);
 		
 		canvas = new GraphingCanvas(new GraphingImage());
+		canvas.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(stateCreator == null || !stateCreator.isShowing()) {
+					stateCreator = new StateCreator(canvas, statePoints, (((double)e.getX()) / canvas.getWidth()) * 100);
+					stateCreator.setVisible(true);
+				}
+			}
+		});
+		canvas.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				canvas.updateMouseLocation(e);
+			}
+		});
 		scrollPane_1.setViewportView(canvas);
 		
 		Box horizontalBox = Box.createHorizontalBox();
@@ -281,6 +297,16 @@ public class MainWindow {
 		fileList.setLayout(new BoxLayout(fileList, BoxLayout.Y_AXIS));
 		
 		JPanel statesPanel = new JPanel();
+		statesPanel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				canvas.setCursorVisibility(true);
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				canvas.setCursorVisibility(false);
+			}
+		});
 		tabbedPane.addTab("States", null, statesPanel, null);
 		SpringLayout sl_statesPanel = new SpringLayout();
 		statesPanel.setLayout(sl_statesPanel);
