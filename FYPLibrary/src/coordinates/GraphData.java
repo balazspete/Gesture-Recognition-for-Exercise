@@ -35,4 +35,10 @@ public class GraphData {
 		return coordinateData.values();
 	}
 	
+	public void removeSeriesHighlight() {
+		for(CoordinateSeries s : coordinateData.values()) {
+			s.setHighlight(false);
+		}
+	}
+	
 }

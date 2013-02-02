@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -61,7 +60,7 @@ public class GraphingCanvas extends JPanel {
 	public void resizeImage() {
 		image = new GraphingImage(getWidth(), getHeight(), image.getGraphData(), image.getScalingFactor());
 		image.paintImage();
-		simage = new StateImage(getWidth(), getHeight());
+		simage = new StateImage(getWidth(), getHeight(), simage.getPoints());
 		simage.paintImage();
 	}
 	

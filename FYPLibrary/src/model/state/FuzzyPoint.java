@@ -5,8 +5,8 @@ import java.util.List;
 
 public class FuzzyPoint {
 
-	private FuzzyNumber x = null, y = null, z = null;
-	private double horizontalAlignment = 0;
+	protected FuzzyNumber x = null, y = null, z = null;
+	protected double horizontalAlignment = 0;
 	
 	public FuzzyPoint() {
 	}

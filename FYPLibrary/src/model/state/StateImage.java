@@ -30,25 +30,27 @@ public class StateImage extends BufferedImage {
 		}
 	}
 	
-	private Vector<FuzzyPoint> points = new Vector<FuzzyPoint>();
+	private Vector<FuzzyPoint> points;
 	private FuzzyPoint temporary = null;
 	private ColorChooser chooser = new ColorChooser();
 
 	public StateImage() {
 		super(1, 1, BufferedImage.TYPE_INT_ARGB);
+		points = new Vector<FuzzyPoint>();
 	}
 	
 	public StateImage(int width, int height) {
 		super(width, height, BufferedImage.TYPE_INT_ARGB);
+		points = new Vector<FuzzyPoint>();
 	}
 	
 	public StateImage(int width, int height, Vector<FuzzyPoint> points) {
 		super(width, height, BufferedImage.TYPE_INT_ARGB);
 		this.points = points;
-		this.points.add(new FuzzyPoint(
-				new FuzzyNumber(30.10),
-				new FuzzyNumber(60.10),
-				new FuzzyNumber(90.10)));
+	}
+	
+	public Vector<FuzzyPoint> getPoints() {
+		return points;
 	}
 	
 	public void paintImage() {

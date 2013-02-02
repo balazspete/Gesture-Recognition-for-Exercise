@@ -39,4 +39,12 @@ public class FuzzyNumber {
 		return false;
 	}
 	
+	public FuzzyNumber subtract(FuzzyNumber other) {
+		return new FuzzyNumber(value - other.getValue(), error + other.getError());
+	}
+	
+	public String toString() {
+		return "" + value + ", " + error;
+	}
+	
 }

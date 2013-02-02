@@ -54,7 +54,7 @@ public class GraphingImage extends BufferedImage {
 		if(color == null) color = defaultColor;
 		
 		Graphics2D g2 = (Graphics2D) this.getGraphics();
-		g2.setStroke(new BasicStroke(1));
+		g2.setStroke(new BasicStroke(data.isHighlighted() ? 3 : 1));
 		
 		Point2D[] previous = calculatePoint(data, 0);
 		

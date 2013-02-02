@@ -20,6 +20,8 @@ public class CoordinateSeries {
 	private double verticalOffset = 0;
 	private double horisontalOffset = 0;
 	
+	private boolean highlighted = false;
+	
 	public CoordinateSeries(Vector<Coordinate> series) {
 		this.series = series;
 		
@@ -90,6 +92,14 @@ public class CoordinateSeries {
 
 	public void setColor(Color[] color) {
 		this.color = color;
+	}
+	
+	public void setHighlight(boolean highlight) {
+		this.highlighted = highlight;
+	}
+	
+	public boolean isHighlighted() {
+		return highlighted;
 	}
 	
 	private void separateCoordinates(Vector<Double> x, Vector<Double> y, Vector<Double> z) {

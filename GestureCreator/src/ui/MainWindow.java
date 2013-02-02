@@ -5,10 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.SpinnerNumberModel;
+
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.Box;
@@ -24,8 +27,12 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.sql.Savepoint;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JSpinner;
@@ -33,7 +40,11 @@ import javax.swing.SpringLayout;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 
+import model.state.CreateModel;
 import model.state.FuzzyPoint;
+import model.state.InsufficentModelDataError;
+import model.state.InvalidDimensionException;
+
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -56,6 +67,7 @@ public class MainWindow {
 	private StateCreator stateCreator = null;
 	
 	private Vector<FuzzyPoint> statePoints = new Vector<FuzzyPoint>();
+	private JPanel stateList;
 	
 
 	/**
@@ -107,7 +119,7 @@ public class MainWindow {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panel_1.add(scrollPane_1);
 		
-		canvas = new GraphingCanvas(new GraphingImage());
+		canvas = new GraphingCanvas(new GraphingImage(), statePoints);
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -237,14 +249,20 @@ public class MainWindow {
 		sl_controlsList.putConstraint(SpringLayout.EAST, lblPx3, 0, SpringLayout.EAST, lblPx1);
 		controlsList.add(lblPx3);
 		
-		spinnerHorizontalScaling = new JSpinner();
-		sl_controlsList.putConstraint(SpringLayout.NORTH, spinnerHorizontalScaling, 26, SpringLayout.SOUTH, spinnerVerticalDisplacement);
-		sl_controlsList.putConstraint(SpringLayout.WEST, spinnerHorizontalScaling, 80, SpringLayout.EAST, lblHorizontalScaling);
+		spinnerHorizontalScaling = new JSpinner(new SpinnerNumberModel(1, 0, 5, 0.01));
+		sl_controlsList.putConstraint(SpringLayout.NORTH, spinnerHorizontalScaling, -6, SpringLayout.NORTH, lblHorizontalScaling);
+		sl_controlsList.putConstraint(SpringLayout.WEST, spinnerHorizontalScaling, 0, SpringLayout.WEST, spinnerVerticalDisplacement);
 		sl_controlsList.putConstraint(SpringLayout.EAST, spinnerHorizontalScaling, -6, SpringLayout.WEST, lblPx3);
+		JSpinner.NumberEditor editor = (JSpinner.NumberEditor)spinnerHorizontalScaling.getEditor();  
+        DecimalFormat format = editor.getFormat();  
+        format.setMinimumFractionDigits(2);
 		controlsList.add(spinnerHorizontalScaling);
 		
-		spinnerVerticalScaling = new JSpinner();
+		spinnerVerticalScaling = new JSpinner(new SpinnerNumberModel(1, 0, 5, 0.01));
 		sl_controlsList.putConstraint(SpringLayout.NORTH, spinnerVerticalScaling, 6, SpringLayout.SOUTH, spinnerHorizontalScaling);
+		editor = (JSpinner.NumberEditor)spinnerVerticalScaling.getEditor();  
+        format = editor.getFormat();  
+        format.setMinimumFractionDigits(2);
 		controlsList.add(spinnerVerticalScaling);
 		
 		JLabel lblPx4 = new JLabel("px");
@@ -289,7 +307,7 @@ public class MainWindow {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				loadFile();
+				loadFiles();
 			}
 		});
 		filesPanel.add(btnNewButton);
@@ -340,7 +358,7 @@ public class MainWindow {
 		sl_statesPanel.putConstraint(SpringLayout.WEST, lblStates, 10, SpringLayout.WEST, statesPanel);
 		statesPanel.add(lblStates);
 		
-		JButton btnAddNewState = new JButton("Add new state");
+		JButton btnAddNewState = new JButton("Add");
 		btnAddNewState.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -362,32 +380,64 @@ public class MainWindow {
 		JScrollPane scrollPane_3 = new JScrollPane();
 		panel_2.add(scrollPane_3);
 		
-		JPanel stateList = new JPanel();
+		stateList = new JPanel();
 		scrollPane_3.setViewportView(stateList);
+		stateList.setLayout(new BoxLayout(stateList, BoxLayout.Y_AXIS));
+		
+		JButton btnRefreshList = new JButton("Refresh");
+		btnRefreshList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				listStates();
+			}
+		});
+		sl_statesPanel.putConstraint(SpringLayout.NORTH, btnRefreshList, 0, SpringLayout.NORTH, btnAddNewState);
+		sl_statesPanel.putConstraint(SpringLayout.EAST, btnRefreshList, 0, SpringLayout.EAST, panel_2);
+		statesPanel.add(btnRefreshList);
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				createAndSaveModel();
+			}
+		});
+		sl_statesPanel.putConstraint(SpringLayout.NORTH, btnSave, 0, SpringLayout.NORTH, btnAddNewState);
+		sl_statesPanel.putConstraint(SpringLayout.WEST, btnSave, 6, SpringLayout.EAST, btnAddNewState);
+		statesPanel.add(btnSave);
 	}
 	
-	private void loadFile() {
+	private void loadFiles() {
 		if(graphData.getKeys().size() == 0) canvas.replaceImage(new GraphingImage(canvas.getWidth(), canvas.getHeight(), graphData, 1));
 		
 		JFileChooser jfc = new JFileChooser();
+		jfc.setMultiSelectionEnabled(true);
 		int resp = jfc.showOpenDialog(null);
 		
 		if(resp == JFileChooser.APPROVE_OPTION) {
-			String path = jfc.getSelectedFile().getPath();
-			graphData.add(path.intern(), new CoordinateSeries(InputParser.parse(path)));
-			Box b = createFileBox(jfc.getSelectedFile());
-			fileList.add(b);
-			fileList.paintComponents(fileList.getGraphics());
+			File[] files = jfc.getSelectedFiles();
+			
+			for(File file : files) {
+				String path = file.getPath();
+				graphData.add(path.intern(), new CoordinateSeries(InputParser.parse(path)));
+				Box b = createFileBox(file);
+				fileList.add(b);
+				fileList.paintComponents(fileList.getGraphics());
+			}
+
 			reloadImage();
 		}
 	}
 	
 	private void editFile(String filePath) {
+		graphData.removeSeriesHighlight();
+		
 		tabbedPane.setSelectedIndex(0);
 		lblSelectedFilePath.setText(filePath);
 		lblSelectedFilePath.setToolTipText(filePath);
 		
 		CoordinateSeries series = graphData.get(filePath);
+		series.setHighlight(true);
 		
 		spinnerHorizontalScaling.setValue(series.getHorizontalScaling());
 		spinnerVerticalScaling.setValue(series.getVerticalScaling());
@@ -428,7 +478,8 @@ public class MainWindow {
 		JLabel l1 = new JLabel(file.getName());
 		l1.setToolTipText(file.getPath());
 		box.add(l1);
-		/*JLabel l2 = new JLabel("remove");
+		/*
+		JLabel l2 = new JLabel("remove");
 		l2.setForeground(Color.blue);
 		l2.setLabelFor(l1);
 		l2.addMouseListener(new MouseAdapter() {
@@ -443,7 +494,8 @@ public class MainWindow {
 				reloadImage();
 			}
 		});
-		box.add(l2);*/
+		box.add(l2);
+		*/
 		return box;
 	}
 	
@@ -455,5 +507,47 @@ public class MainWindow {
 	private void addNewState() {
 		stateCreator = new StateCreator(canvas, statePoints);
 		stateCreator.setVisible(true);
+	}
+	
+	private void listStates() {
+		stateList.removeAll();
+		for(FuzzyPoint point : statePoints) {
+			String s = "";
+			try {
+				s += point.getX().toString() + ",";
+			} catch (InvalidDimensionException e) {
+				s += ",,";
+			}
+			try {
+				s += point.getY().toString() + ",";
+			} catch (InvalidDimensionException e) {
+				s += ",,";
+			}
+			try {
+				s += point.getZ().toString();
+			} catch (InvalidDimensionException e) {
+				s += ",";
+			} finally {
+				if(s.length() == 0) s = "state...";
+			}
+			
+			stateList.add(new JLabel(s));
+		}
+	}
+	
+	private void createAndSaveModel() {
+		statePoints.capacity();
+		JFileChooser jfc = new JFileChooser();
+		jfc.showSaveDialog(null);
+		int resp = jfc.showSaveDialog(null);
+		
+		if(resp == JFileChooser.APPROVE_OPTION) {
+			try{
+				CreateModel.save(jfc.getSelectedFile(), CreateModel.create(statePoints));
+				
+			} catch (InsufficentModelDataError e) {
+				System.err.println("Not enough states to generate a model...");
+			}
+		}
 	}
 }
