@@ -40,7 +40,8 @@ import javax.swing.SpringLayout;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 
-import model.state.CreateModel;
+import tools.CreateModel;
+
 import model.state.FuzzyPoint;
 import model.state.InsufficentModelDataError;
 import model.state.InvalidDimensionException;
