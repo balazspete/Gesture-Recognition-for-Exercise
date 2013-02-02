@@ -1,0 +1,4 @@
+*.class
+org.eclipse.jdt.core.prefs
+GestureGrapher/.classpath
+GestureGrapher/.project
