@@ -3,6 +3,8 @@ package model.state;
 import java.util.ArrayList;
 import java.util.List;
 
+import exceptions.InvalidDimensionException;
+
 public class FuzzyPoint {
 
 	protected FuzzyNumber x = null, y = null, z = null;

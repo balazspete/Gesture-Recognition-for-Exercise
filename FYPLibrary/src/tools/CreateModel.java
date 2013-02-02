@@ -9,8 +9,9 @@ import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import exceptions.InsufficentModelDataError;
+
 import model.state.FuzzyPoint;
-import model.state.InsufficentModelDataError;
 import model.state.PseudoState;
 
 public class CreateModel {

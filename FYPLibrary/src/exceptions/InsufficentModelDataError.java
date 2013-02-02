@@ -1,4 +1,4 @@
-package model.state;
+package exceptions;
 
 public class InsufficentModelDataError extends Exception {
 	public InsufficentModelDataError(int size) {

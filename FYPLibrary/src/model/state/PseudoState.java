@@ -1,5 +1,7 @@
 package model.state;
 
+import exceptions.InvalidDimensionException;
+
 public class PseudoState extends FuzzyPoint {
 	
 	public PseudoState(FuzzyNumber x, FuzzyNumber y, FuzzyNumber z) {

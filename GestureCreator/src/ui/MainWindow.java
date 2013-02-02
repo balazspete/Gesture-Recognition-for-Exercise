@@ -39,12 +39,13 @@ import javax.swing.SpringLayout;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 
+import exceptions.InsufficentModelDataError;
+import exceptions.InvalidDimensionException;
+
 import tools.CreateModel;
 import tools.InputParser;
 
 import model.state.FuzzyPoint;
-import model.state.InsufficentModelDataError;
-import model.state.InvalidDimensionException;
 
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.KeyAdapter;
