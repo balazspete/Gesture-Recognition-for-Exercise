@@ -19,7 +19,6 @@ import javax.swing.Box;
 import coordinates.CoordinateSeries;
 import coordinates.GraphData;
 import coordinates.GraphingImage;
-import coordinates.InputParser;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -41,6 +40,7 @@ import java.awt.Font;
 import javax.swing.JCheckBox;
 
 import tools.CreateModel;
+import tools.InputParser;
 
 import model.state.FuzzyPoint;
 import model.state.InsufficentModelDataError;

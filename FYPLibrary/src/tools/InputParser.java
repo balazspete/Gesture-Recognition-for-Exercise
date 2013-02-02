@@ -1,4 +1,4 @@
-package coordinates;
+package tools;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Vector;
+
+import coordinates.Coordinate;
 
 public class InputParser {
 

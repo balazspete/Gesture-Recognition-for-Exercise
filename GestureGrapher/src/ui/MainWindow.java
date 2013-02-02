@@ -23,9 +23,10 @@ import javax.swing.JLabel;
 
 import javax.swing.JFileChooser;
 
+import tools.InputParser;
+
 import coordinates.Coordinate;
 import coordinates.CoordinateImage;
-import coordinates.InputParser;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
