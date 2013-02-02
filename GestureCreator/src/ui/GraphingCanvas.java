@@ -17,6 +17,11 @@ import model.state.StateImage;
 import coordinates.GraphingImage;
 
 @SuppressWarnings("serial")
+/**
+ * A class to display a StateImage on top of a GraphingImage
+ * @author Balazs Pete
+ *
+ */
 public class GraphingCanvas extends JPanel {
 
 	private GraphingImage image = null;
@@ -26,12 +31,19 @@ public class GraphingCanvas extends JPanel {
 	private int mouseYLocation = -1;
 	private int savedMouseYLocation = -1;
 	
+	/**
+	 * create an instance of GraphingCanvas
+	 */
 	public GraphingCanvas() {
 		image = new GraphingImage();
 		simage = new StateImage();
 		addListeners();
 	}
 	
+	/**
+	 * Create an instance of GraphingCanvas with a specified GraohingImage
+	 * @param image instance of GraphingImage to be used 
+	 */
 	public GraphingCanvas(GraphingImage image) {
 		this.setSize(image.getWidth(), image.getHeight());
 		this.image = image;
@@ -39,6 +51,11 @@ public class GraphingCanvas extends JPanel {
 		addListeners();
 	}
 	
+	/**
+	 * Create an instance of GraphingCanvas with a specified GraohingImage and a set of FuzzyPoints
+	 * @param image instance of GraphingImage to be used 
+	 * @param points set of FuzzyPoints to be used by the StatesImage
+	 */
 	public GraphingCanvas(GraphingImage image, Vector<FuzzyPoint> points) {
 		this.setSize(image.getWidth(), image.getHeight());
 		this.image = image;
@@ -46,17 +63,27 @@ public class GraphingCanvas extends JPanel {
 		addListeners();
 	}
 	
+	/**
+	 * Replace the GraphingImage used by the canvas
+	 * @param image the new instance of GraphingImage to be used
+	 */
 	public void replaceImage(GraphingImage image) {
 		this.image = image;
 		this.setSize(image.getWidth(), image.getHeight());
 		this.setPreferredSize(this.getSize());
 	}
 	
+	/**
+	 * Update the images of the canvas
+	 */
 	public void reloadImage() {
 		image.paintImage();
 		simage.paintImage();
 	}
 	
+	/**
+	 * Resize the images contained in the canvas to fir the canvas
+	 */
 	public void resizeImage() {
 		image = new GraphingImage(getWidth(), getHeight(), image.getGraphData(), image.getScalingFactor());
 		image.paintImage();
@@ -64,6 +91,9 @@ public class GraphingCanvas extends JPanel {
 		simage.paintImage();
 	}
 	
+	/**
+	 * Paint the canvas and all subcomponents
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -98,21 +128,36 @@ public class GraphingCanvas extends JPanel {
         }
 	}
 
+	/**
+	 * Update the mouse location
+	 * @param e the mouse event
+	 */
 	public void updateMouseLocation(MouseEvent e){
 		mouseXLocation = e.getX();
 		mouseYLocation = e.getY(); 
 		this.paintAll(this.getGraphics());
 	}
 	
+	/**
+	 * Get the StateImage contained by the canvas
+	 * @return the instance of StateImage
+	 */
 	public StateImage getSimage() {
 		return simage;
 	}
 	
+	/**
+	 * Hide the line showing the mouse location
+	 * @param e mouse event
+	 */
 	private void hideLine(MouseEvent e){
 		mouseXLocation = -1;
 		this.paintAll(this.getGraphics());
 	}
 	
+	/**
+	 * Add the listeners
+	 */
 	private void addListeners() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
@@ -122,15 +167,26 @@ public class GraphingCanvas extends JPanel {
 		});
 	}
 	
+	/**
+	 * Set whether the cursor is drawn or not
+	 * @param visible true if to be drawn, false otherwise
+	 */
 	public void setCursorVisibility(boolean visible) {
 		cursor = visible;
 		if(!visible) savedMouseYLocation = -1;
 	}
 	
+	/**
+	 * Get the last saved location of the mouse
+	 * @return the last saved mouse location
+	 */
 	public int getSavedMouseYLocation() {
 		return savedMouseYLocation;
 	}
 	
+	/**
+	 * Save the mouse location
+	 */
 	public void saveMouseYLocation() {
 		savedMouseYLocation = mouseYLocation;
 	}

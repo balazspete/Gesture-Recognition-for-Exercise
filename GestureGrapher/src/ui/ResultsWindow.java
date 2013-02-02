@@ -23,6 +23,11 @@ import java.util.Scanner;
 import javax.swing.JCheckBox;
 import java.awt.Color;
 
+/**
+ * An interface to display the snapped Coordinates by the CoordinateCanvas class
+ * @author Balazs Pete
+ *
+ */
 public class ResultsWindow extends JFrame {
 
 	private JPanel contentPane;
@@ -86,14 +91,25 @@ public class ResultsWindow extends JFrame {
 		panel.add(chckbxCloseAfterSave);
 	}
 	
+	/**
+	 * Set the save directory
+	 * @param directory the path of the directory
+	 */
 	public void setSaveDirectory(String directory) {
 		this.saveDirectory = directory;
 	}
 	
+	/**
+	 * Set the contents of the editor
+	 * @param text the content
+	 */
 	public void setText(String text) {
 		editorPane.setText(text);
 	}
 	
+	/**
+	 * Save the contents of the editor to a file (location to be chosed by a JFileChooser)
+	 */
 	private void saveResults(){
 		JFileChooser jfc = new JFileChooser();
 		if(saveDirectory != null) { 

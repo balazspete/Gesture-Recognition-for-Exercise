@@ -9,6 +9,11 @@ import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Vector;
 
+/**
+ * A class to draw a series of Coordinates
+ * @author Balazs Pete
+ *
+ */
 public class CoordinateImage extends BufferedImage {
 
 	private Vector<Coordinate> coordinates = null;
@@ -24,10 +29,20 @@ public class CoordinateImage extends BufferedImage {
 	private BasicStroke pointWidth;
 	private BasicStroke lineWidth;
 	
+	/**
+	 * Create a blank CoordinateImage
+	 */
 	public CoordinateImage() {
 		super(1, 1, BufferedImage.TYPE_INT_RGB);
 	}
 	
+	/**
+	 * Create a Coordinate image with specified input data
+	 * @param width Width of the image
+	 * @param height Height of the image
+	 * @param coordinates List of Coordinates to draw
+	 * @param verticalFactor scaling factor of drawn image
+	 */
 	public CoordinateImage(int width, int height, Vector<Coordinate> coordinates, int verticalFactor) {
 		super((width * verticalFactor) + 10, height, BufferedImage.TYPE_INT_RGB);
 		this.verticalFactor = verticalFactor;
@@ -36,14 +51,25 @@ public class CoordinateImage extends BufferedImage {
 		createImage();
 	}
 	
+	/**
+	 * Get all Coordinates
+	 * @return vector containing all Coordinates in order
+	 */
 	public Vector<Coordinate> getCoordinates() {
 		return coordinates;
 	}
 	
+	/**
+	 * Get the vertical scaling of the image
+	 * @return vertical scaling (int)
+	 */
 	public int getVericalFactor() {
 		return verticalFactor;
 	}
 	
+	/**
+	 * Method to create the image and draw the coordinates
+	 */
 	private void createImage() {
 		Vector<Double> x = new Vector<Double>();
 		Vector<Double> y = new Vector<Double>();
@@ -71,6 +97,12 @@ public class CoordinateImage extends BufferedImage {
 		
 	}
 	
+	/**
+	 * Method to draw a series of numbers on the image
+	 * @param points list of integer values
+	 * @param stats scaling statistics calculated by the getStats() method
+	 * @param color the Color to be used to draw the line
+	 */
 	private void drawAxis(Vector<Double> points, double[] stats, Color color) {
 		double factor = (height - 10) / difference;
 		
@@ -88,10 +120,23 @@ public class CoordinateImage extends BufferedImage {
 		}
 	}
 	
+	/**
+	 * Method to calculate the position of the value on the image based on input stats and scaling factor
+	 * @param point value to be drawn
+	 * @param stats drawing stats
+	 * @param factor scaling factor
+	 * @return relative value of value on image
+	 */
 	private double calculatePoint(double point, double[] stats, double factor) {
 		return height - ((point - stats[0]) * factor + 5);
 	}
 	
+	/**
+	 * Method to separate coordinates' values into three separate lists
+	 * @param x x-list
+	 * @param y y-list
+	 * @param z z-list
+	 */
 	private void separateCoordinates(Vector<Double> x, Vector<Double> y, Vector<Double> z) {
 		for(int i = 0; i < coordinates.size(); i++) {
 			Coordinate c = coordinates.elementAt(i);
@@ -102,9 +147,9 @@ public class CoordinateImage extends BufferedImage {
 	}
 	
 	/**
-	 * 
-	 * @param points
-	 * @return min, max, diff
+	 * Method to calculate the statistics for the number series (minimum, maximum, max-difference)
+	 * @param points value series
+	 * @return series stats (0:min, 1:max, 2:diff)
 	 */
 	private double[] getStats(Vector<Double> points) {
 		double[] stats = new double[3];

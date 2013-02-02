@@ -51,6 +51,11 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Main class for the gestureCreator project
+ * @author Balazs Pete
+ *
+ */
 public class MainWindow {
 
 	private JFrame frame;
@@ -409,6 +414,9 @@ public class MainWindow {
 		statesPanel.add(btnSave);
 	}
 	
+	/**
+	 * Load fires containing recorded gestures
+	 */
 	private void loadFiles() {
 		if(graphData.getKeys().size() == 0) canvas.replaceImage(new GraphingImage(canvas.getWidth(), canvas.getHeight(), graphData, 1));
 		
@@ -431,6 +439,10 @@ public class MainWindow {
 		}
 	}
 	
+	/**
+	 * Edit the display parameters of a gesture file
+	 * @param filePath path to the file
+	 */
 	private void editFile(String filePath) {
 		graphData.removeSeriesHighlight();
 		
@@ -448,6 +460,10 @@ public class MainWindow {
 		spinnerVerticalDisplacement.setValue(series.getVerticalOffset());
 	}
 	
+	/**
+	 * Update the settings of a CoordinateSeries based on values on the screen
+	 * @param seriesFilePath path of the gesture file
+	 */
 	private void updateSeriesSettings(String seriesFilePath) {
 		CoordinateSeries series = graphData.get(seriesFilePath);
 		
@@ -464,6 +480,11 @@ public class MainWindow {
 		reloadImage();
 	}
 	
+	/**
+	 * Create an entry of the file on the screen
+	 * @param file file
+	 * @return the created entry
+	 */
 	private Box createFileBox(File file) {
 		Box box = Box.createHorizontalBox();
 		JLabel l0 = new JLabel("Edit  ");
@@ -501,16 +522,25 @@ public class MainWindow {
 		return box;
 	}
 	
+	/**
+	 * Reload the generated images
+	 */
 	private void reloadImage() {
 		canvas.reloadImage();
 		canvas.paintComponent(canvas.getGraphics());
 	}
 	
+	/**
+	 * Add a new state to the list of PsuedoStates
+	 */
 	private void addNewState() {
 		stateCreator = new StateCreator(canvas, statePoints);
 		stateCreator.setVisible(true);
 	}
 	
+	/**
+	 * List all PsuedoStates
+	 */
 	private void listStates() {
 		stateList.removeAll();
 		for(FuzzyPoint point : statePoints) {
@@ -537,6 +567,9 @@ public class MainWindow {
 		}
 	}
 	
+	/**
+	 * Create and save the model
+	 */
 	private void createAndSaveModel() {
 		statePoints.capacity();
 		JFileChooser jfc = new JFileChooser();

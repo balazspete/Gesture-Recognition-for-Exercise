@@ -35,6 +35,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseMotionAdapter;
 
+/**
+ * The main class of the GestureGrapher project
+ * @author Balazs Pete
+ *
+ */
 public class MainWindow extends JFrame {
 	
 	private String windowTitle = "Gesture Grapher";
@@ -246,6 +251,9 @@ public class MainWindow extends JFrame {
 		panel_1.add(lblSaveFolder);
 	}
 	
+	/**
+	 * Load a file (to be chosen by JFileChooser) and process it
+	 */
 	private void loadAndProcessFile() {
 		JFileChooser jfc = new JFileChooser();
 		int resp = jfc.showOpenDialog(null);
@@ -258,6 +266,9 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Create a CoordinateIMage and display it
+	 */
 	private void createImageAndLoad() {
 		if(coordinates != null) {
 			CoordinateImage img = new CoordinateImage(coordinates.size() * verticalFactor, canvas.getHeight(), coordinates, verticalFactor);
@@ -266,6 +277,9 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Update the labels 
+	 */
 	private void updateLabels(){
 		int lb = canvas.lowerBound;
 		int ml = canvas.mouseLocation;
@@ -292,22 +306,42 @@ public class MainWindow extends JFrame {
 		}
 	}
 	
+	/**
+	 * Set the values of the start labels
+	 * @param x x-value
+	 * @param y y-value
+	 * @param z z-value
+	 */
 	private void setStartLabels(String x, String y, String z) {
 		lblStartXData.setText(x);
 		lblStartYData.setText(y);
 		lblStartZData.setText(z);
 	}
 	
+	/**
+	 * Set the values of the end labels
+	 * @param x x-value
+	 * @param y y-value
+	 * @param z z-value
+	 */
 	private void setEndLabels(String x, String y, String z) {
 		lblEndXData.setText(x);
 		lblEndYData.setText(y);
 		lblEndZData.setText(z);
 	}
 	
+	/**
+	 * Get the coordinates at the specified location
+	 * @param position the location at which the coordinates are needed
+	 * @return the Coordinate value
+	 */
 	private Coordinate getCoord(int position) {
 		return coordinates.get((int)(position / verticalFactor));
 	}
 
+	/**
+	 * Method to choose the default save location
+	 */
 	private void chooseSaveLocation() {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
