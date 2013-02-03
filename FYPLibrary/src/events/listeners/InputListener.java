@@ -9,6 +9,10 @@ import events.event.InputEvent;
  */
 public interface InputListener {
 	
+	/**
+	 * Method to handle the InputEvent
+	 * @param e Input event to handle
+	 */
 	public void handleInput(InputEvent e);
 	
 }

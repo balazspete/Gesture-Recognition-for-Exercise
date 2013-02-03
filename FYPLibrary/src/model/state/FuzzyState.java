@@ -33,6 +33,26 @@ public class FuzzyState {
 	}
 	
 	/**
+	 * Determine whether the input vector is pointing towards the same 
+	 * general direction as the vector representation of the state
+	 * @param vector The vector to test
+	 * @return True if the vector and the state are pointing towards the same direction, false otherwise
+	 */
+	public boolean isInDirection(DisplacementVector vector) {
+		double[] values = vector.getAll();
+		int index = 0;
+		
+		while(index < DIMENSIONS) {
+			// Axis directions do not correspond, return false
+			if((factors[index] * (direction ? 1 : -1) >= 0) != (values[index] >= 0)) return false;
+			
+			index++;
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Match the DisplacementVector to the FuzzyState, to determine if it satisfies the state's condition 
 	 * @param vector the DisplacementVector to match
 	 * @return True if conditions satisfied, false otherwise

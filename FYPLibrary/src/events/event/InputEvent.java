@@ -10,11 +10,11 @@ import coordinates.Coordinate;
  *
  */
 public class InputEvent extends EventObject {
-
+	
 	/**
-	 * 
+	 * Automatically generated serialVersionUID
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9072352045217730184L;
 	
 	private Coordinate coordinate;
 
