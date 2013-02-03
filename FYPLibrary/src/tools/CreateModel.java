@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Vector;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import exceptions.InsufficentModelDataError;
@@ -14,14 +13,30 @@ import exceptions.InsufficentModelDataError;
 import model.state.FuzzyPoint;
 import model.state.PseudoState;
 
+/**
+ * A class to create a model of a gesture based on a list of FuzzyPoints
+ * @author Balazs Pete
+ *
+ */
 public class CreateModel {
 	
+	/**
+	 * Create a model (a list of PseudoStates) based on a set of FuzzyPoints
+	 * @param points the set of FuzzyPoints
+	 * @return the set of PseudoStates
+	 * @throws InsufficentModelDataError thrown if the input set contains less than two points
+	 */
 	public static Vector<PseudoState> create(Vector<FuzzyPoint> points) throws InsufficentModelDataError {
 		if(points.size() < 2) throw new InsufficentModelDataError(points.size());
 		
 		return calculate(points);
 	}
 	
+	/**
+	 * Save the model created by the create() function to a file
+	 * @param file the file to which the model is written to
+	 * @param states the model to be saved
+	 */
 	public static void save(File file, Vector<PseudoState> states) {
 		String output = "";
 		for(PseudoState state : states) {
@@ -38,6 +53,11 @@ public class CreateModel {
 		}
 	}
 	
+	/**
+	 * Calculate the model (set of PseudoStates) from a set of FuzzyPoints
+	 * @param points the set of FuzzyPoints
+	 * @return the set of PseudoStates, known as the model
+	 */
 	private static Vector<PseudoState> calculate(Vector<FuzzyPoint> points) {
 		Vector<PseudoState> states = new Vector<PseudoState>();
 		

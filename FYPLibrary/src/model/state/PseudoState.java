@@ -1,6 +1,7 @@
 package model.state;
 
 import exceptions.InvalidDimensionException;
+import exceptions.InvalidStringRepresentationException;
 
 /**
  * A class to imitate a FuzzyState
@@ -19,6 +20,15 @@ public class PseudoState extends FuzzyPoint {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	/**
+	 * Create an instance of PseudoState from its string representation
+	 * @param stringRepresentation the string representation
+	 * @throws InvalidStringRepresentationException Thrown if string representation is not correct
+	 */
+	public PseudoState(String stringRepresentation) throws InvalidStringRepresentationException {
+		fromString(stringRepresentation);
 	}
 	
 	/**
@@ -56,5 +66,30 @@ public class PseudoState extends FuzzyPoint {
 		
 		return new PseudoState(x, y, z);
 	}
+
+	/**
+	 * Parse the string and populate instance variables 
+	 * @param strRep The String representation
+	 * @throws InvalidStringRepresentationException Thrown if string representation is not correct
+	 */
+	private void fromString(String strRep) throws InvalidStringRepresentationException {
+		String[] rep = strRep.split(",");
+		
+		if(rep.length != 6) throw new InvalidStringRepresentationException(strRep);
+		
+		this.x = getFuzzyNumber(rep, 0);
+		this.y = getFuzzyNumber(rep, 2);
+		this.z = getFuzzyNumber(rep, 4);
+	}
 	
+	/**
+	 * Method to get a FuzzyNumber
+	 * @param rep The split String representation
+	 * @param i The index of the value
+	 * @return The creates FuzzyNumber
+	 */
+	private FuzzyNumber getFuzzyNumber(String[] rep, int i) {
+		if(i > rep.length - 1 || i < 0) return null;
+		return this.x = rep[i].equals("") ? null : new FuzzyNumber(Double.parseDouble(rep[i]), Double.parseDouble(rep[i + 1]));
+	}
 }

@@ -23,18 +23,34 @@ public class Coordinate {
 
 	/**
 	 * Get the X coordinate
-	 * @return
+	 * @return The x-coordinate
 	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Get the Y coordinate
+	 * @return The y-coordinate
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Get the Z coordinate
+	 * @return The z-coordinate
+	 */
 	public double getZ() {
 		return z;
+	}
+	
+	/**
+	 * Get all Coordinates
+	 * @return An array containing all coordinates  in the form: { x, y, z}
+	 */
+	public double[] getAll() {
+		return new double[] { x, y, z };
 	}
 	
 	/**

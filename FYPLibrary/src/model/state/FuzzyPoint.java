@@ -99,6 +99,15 @@ public class FuzzyPoint {
 		
 		return l;
 	}
+	
+	public List<FuzzyNumber> getAllValues() {
+		List<FuzzyNumber> l = new ArrayList<FuzzyNumber>();
+		l.add(x);
+		l.add(y);
+		l.add(z);
+		
+		return l;
+	}
 
 	/**
 	 * Method to get the horizontal alignment of the point ()used by GraphingCanvas
