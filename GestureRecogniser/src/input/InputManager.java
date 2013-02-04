@@ -1,6 +1,12 @@
 package input;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import coordinates.Coordinate;
+import events.event.CoordinateEvent;
 import events.event.InputEvent;
+import events.listeners.CoordinateListener;
 import events.listeners.InputListener;
 
 /**
@@ -12,6 +18,8 @@ import events.listeners.InputListener;
  *
  */
 public class InputManager {
+	
+	private List<CoordinateListener> listeners = new ArrayList<CoordinateListener>();
 
 	private InputInterface inputInterface;
 	
@@ -35,9 +43,34 @@ public class InputManager {
 		inputInterface.addEventListener(new InputListener(){
 			@Override
 			public void handleInput(InputEvent e) {
-				System.out.println(e.getCoordinate().toString());
+				fireEvent(e.getCoordinate());
 			}
 		});
 	}
 	
+	/**
+	 * Add an CoordinateListener to the interface
+	 * @param listener Listener to be added
+	 */
+	public synchronized void addEventListener(CoordinateListener listener)  {
+		listeners.add(listener);
+	}
+	
+	/**
+	 * Remove a listener from the interface
+	 * @param listener Listener to be removed
+	 */
+	public synchronized void removeEventListener(CoordinateListener listener)   {
+		listeners.remove(listener);
+	}
+
+	/**
+	 * Method to be called to notify all listeners
+	 */
+	protected synchronized void fireEvent(Coordinate coordinate) {
+	    CoordinateEvent event = new CoordinateEvent(this, coordinate);
+	    for(CoordinateListener l : listeners) {
+	    	l.handleCoordinate(event);
+	    }
+	}
 }

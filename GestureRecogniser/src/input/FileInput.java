@@ -17,6 +17,8 @@ import coordinates.Coordinate;
  */
 public class FileInput extends InputInterface {
 
+	private static final int SLEEP_TIME = 100;
+	
 	private String filePath;
 	
 	/**
@@ -42,7 +44,7 @@ public class FileInput extends InputInterface {
 	        	fireEvent(c);
 	        	
 	        	try {
-					sleep(400);
+					sleep(SLEEP_TIME);
 				} catch (InterruptedException e) {
 					System.err.println("FileInput l.39: Could not 'sleep'");
 				}

@@ -80,6 +80,7 @@ public class FuzzyState {
 			double high = factors[index] * base * baseHigh * highFactors[index];
 			
 			double value = values[index];
+			System.out.println(value + " " + low + " " + high);
 			if(value < low || high < value) return false;
 			
 			index++;

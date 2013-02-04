@@ -37,6 +37,7 @@ public class FiniteStateMachine {
 	 */
 	public FiniteStateMachine(List<FuzzyState> states) {
 		this.states = states;
+		//states.add(0, new FuzzyState(new PseudoState(null, null, null)));
 	}
 	
 	/**
@@ -102,8 +103,7 @@ public class FiniteStateMachine {
 	 * @param coordinate The coordinate to match
 	 */
 	private synchronized void match(Coordinate coordinate) {
-		if(currentState == states.size()-1) return;
-		
+		if(currentState!=0 && currentState == states.size()-1) return;
 		int size = coordinates.size();
 		
 		if(size == 0) {
@@ -115,6 +115,7 @@ public class FiniteStateMachine {
 			for(int i = coordinates.size() -1; i >= 0; i--) {
 				if(matchHelper(coordinate)) return;
 			}
+			
 		}
 	}
 	
@@ -126,7 +127,7 @@ public class FiniteStateMachine {
 	private boolean matchHelper(Coordinate coordinate) {
 		DisplacementVector vector = 
 				DisplacementVector.getVector(coordinates.getLast(), coordinate);
-		boolean result = states.get(currentState + 1).match(vector);
+		boolean result = states.get(currentState).match(vector);
 		
 		if(result) goToNextState();
 		
