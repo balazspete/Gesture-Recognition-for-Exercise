@@ -41,7 +41,8 @@ public class GestureRecogniser {
 	public void start() {
 		// Add FiniteStateMachines to the FSM manager
 		fsmm.add(new FiniteStateMachine(
-				Gesture.createRepresentation(Gesture_LeftToRight.GESTURE_MODEL)), 
+				Gesture.createRepresentation(Gesture_LeftToRight.GESTURE_MODEL, 
+						Gesture_LeftToRight.ENABLED_AXES)), 
 				new Gesture_LeftToRight());
 		
 		// Change InputInterface depending on input requirements

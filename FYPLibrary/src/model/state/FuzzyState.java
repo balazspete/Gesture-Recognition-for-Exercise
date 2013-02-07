@@ -61,6 +61,7 @@ public class FuzzyState {
 		double[] values = vector.getAll();
 		double base = values[firstIndex];
 		
+		System.out.println(base);
 		// Return no match, if the direction is opposite
 		if((base >= 0) != direction) return false;
 		
