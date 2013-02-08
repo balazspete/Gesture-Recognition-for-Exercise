@@ -87,6 +87,6 @@ public class FiniteStateMachineManager extends Thread {
 		Gesture g = managees.get((FiniteStateMachine) e.getSource());
 		reset();
 		
-		System.out.println(g.getClass().getName());
+		System.err.println(g.getClass().getName());
 	}
 }
