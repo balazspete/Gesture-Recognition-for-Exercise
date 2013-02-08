@@ -8,6 +8,11 @@ package exceptions;
 public class InvalidStringRepresentationException extends Exception {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6966069181074073451L;
+
+	/**
 	 * Create a new instance of the exception
 	 */
 	public InvalidStringRepresentationException() {

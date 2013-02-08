@@ -8,6 +8,11 @@ package exceptions;
 public class InsufficentModelDataError extends Exception {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6416721351684405061L;
+
+	/**
 	 * Create a new instance of InsufficentModelDataError
 	 */
 	public InsufficentModelDataError() {
