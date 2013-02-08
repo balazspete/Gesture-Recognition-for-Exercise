@@ -26,9 +26,6 @@ public class CoordinateImage extends BufferedImage {
 	private Color yColor = Color.green;
 	private Color zColor = Color.orange;
 	
-	private BasicStroke pointWidth;
-	private BasicStroke lineWidth;
-	
 	/**
 	 * Create a blank CoordinateImage
 	 */

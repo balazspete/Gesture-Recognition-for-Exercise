@@ -1,8 +1,5 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +8,6 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 
@@ -25,13 +21,8 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.Window.Type;
 
 /**
  * INterface to create a PseudoState
@@ -40,6 +31,11 @@ import java.awt.Window.Type;
  */
 public class StateCreator extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7581751783965412612L;
+	
 	private JPanel contentPane;
 	private GraphingCanvas canvas = null;
 	

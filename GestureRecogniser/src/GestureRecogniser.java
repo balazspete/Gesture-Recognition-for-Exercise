@@ -1,9 +1,7 @@
-import java.util.List;
 
 import events.event.CoordinateEvent;
 import events.listeners.CoordinateListener;
 import model.FiniteStateMachine;
-import model.state.FuzzyState;
 import recogniser.FiniteStateMachineManager;
 import gestures.Gesture;
 import gestures.Gesture_LeftToRight;
@@ -28,16 +26,21 @@ public class GestureRecogniser {
 		gr.start();
 	}
 	
-	/****************************************/
+	
 	
 	private InputManager inputManager;
 	FiniteStateMachineManager fsmm = new FiniteStateMachineManager();
 	
-	
+	/**
+	 * Create a new instance of GestureRecogniser
+	 */
 	public GestureRecogniser() {
 		
 	}
 	
+	/**
+	 * Start the execution of the instance
+	 */
 	public void start() {
 		// Add FiniteStateMachines to the FSM manager
 		fsmm.add(new FiniteStateMachine(
