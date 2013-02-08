@@ -81,6 +81,7 @@ public class FuzzyState {
 			double high = factors[index] * base * baseHigh * highFactors[index];
 			
 			double value = values[index];
+			System.out.println(factors[index] +" "+ base  +" "+ baseLow  +" "+  lowFactors[index]);
 			System.out.println(value + " " + low + " " + high);
 			if(value < low || high < value) return false;
 			
@@ -139,8 +140,8 @@ public class FuzzyState {
 		double newFactor = n.getValue() / factor;
 		factors[index] = newFactor;
 		
-		lowFactors[index] = (100.0 - n.getError()) / 100;
-		highFactors[index] = (100.0 + n.getError()) / 100;
+		lowFactors[index] = 1.0 - n.getError();
+		highFactors[index] = 1.0 + n.getError();
 	}
 	
 	/**
@@ -157,8 +158,8 @@ public class FuzzyState {
 		factors[index] = 1;
 		direction = (factor >= 0);
 		
-		lowFactors[index] = (100.0 - n.getError()) / 100;
-		highFactors[index] = (100.0 + n.getError()) / 100;
+		lowFactors[index] = 1.0 - n.getError();
+		highFactors[index] = 1.0 + n.getError();
 		
 		return factor;
 	}
