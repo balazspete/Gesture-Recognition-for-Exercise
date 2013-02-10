@@ -7,10 +7,24 @@ import model.state.FuzzyNumber;
 import model.state.FuzzyState;
 import model.state.PseudoState;
 
+/**
+ * A class defining the skeleton of a Gesture
+ * @author Balazs Pete
+ *
+ */
 public abstract class Gesture {
 
+	/**
+	 * The Gesture model created by the GestureCreator
+	 */
 	public static double[][] GESTURE_MODEL = new double[][] {};
 	
+	/**
+	 * Create a Gesture representation of FuzzyStates from a Gesture model
+	 * @param model The gesture model
+	 * @param axes The boolean array defining which axes are enabled (0: x-axis, 1: y-axis, 2: z-axis)
+	 * @return The FuzzyState representation
+	 */
 	public static List<FuzzyState> createRepresentation(double[][] model, boolean[] axes) {
 		LinkedList<FuzzyState> states = new LinkedList<FuzzyState>();
 		
