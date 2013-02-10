@@ -12,7 +12,7 @@ import gestures.Gesture;
 import model.FiniteStateMachine;
 
 /**
- * An object to manage all FiniteStateMAchines of the gesture recognizer
+ * An object to manage all FiniteStateMachines of the gesture recognizer
  * @author Balazs Pete
  *
  */
@@ -68,6 +68,16 @@ public class FiniteStateMachineManager extends Thread {
 		clear();
 		for(FiniteStateMachine fsm : managees.keySet()) {
 			fsm.reset();
+		}
+	}
+	
+	/**
+	 * Add an AcceptinStateListener to all FiniteStateMachines
+	 * @param listener The AcceptinStateListener to add to the FSMs.
+	 */
+	public void addAcceptingStateListener(AcceptingStateListener listener) {
+		for(FiniteStateMachine fsm : managees.keySet()) {
+			fsm.addEventListener(listener);
 		}
 	}
 	

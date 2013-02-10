@@ -1,8 +1,11 @@
 
+import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
+import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
 import model.FiniteStateMachine;
 import recogniser.FiniteStateMachineManager;
+import ui.monitor.input.InputMonitor;
 import gestures.Gesture;
 import gestures.Gesture_LeftToRight;
 import input.FileInput;
@@ -26,17 +29,14 @@ public class GestureRecogniser {
 		gr.start();
 	}
 	
-	
-	
+	private FiniteStateMachineManager fsmm = new FiniteStateMachineManager();
 	private InputManager inputManager;
-	FiniteStateMachineManager fsmm = new FiniteStateMachineManager();
+	private InputMonitor inputMonitor;
 	
 	/**
 	 * Create a new instance of GestureRecogniser
 	 */
-	public GestureRecogniser() {
-		
-	}
+	public GestureRecogniser() { }
 	
 	/**
 	 * Start the execution of the instance
@@ -55,6 +55,15 @@ public class GestureRecogniser {
 			@Override
 			public void handleCoordinate(CoordinateEvent e) {
 				fsmm.input(e.getCoordinate());
+			}
+		});
+		
+		
+		inputMonitor = new InputMonitor(inputManager);
+		fsmm.addAcceptingStateListener(new AcceptingStateListener() {
+			@Override
+			public void handleAcceptingState(AcceptingStateEvent e) {
+				inputMonitor.handleAcceptingState(e);
 			}
 		});
 		
