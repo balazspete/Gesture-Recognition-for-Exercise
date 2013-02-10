@@ -42,6 +42,11 @@ import java.awt.event.MouseMotionAdapter;
  */
 public class MainWindow extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2704046350100047330L;
+
 	private String windowTitle = "Gesture Grapher";
 
 	private Vector<Coordinate> coordinates = null;
