@@ -8,6 +8,7 @@ import events.event.CoordinateEvent;
 import events.event.InputEvent;
 import events.listeners.CoordinateListener;
 import events.listeners.InputListener;
+import filters.Filter;
 
 /**
  * A class to manage the input received by the application.
@@ -22,13 +23,15 @@ public class InputManager {
 	private List<CoordinateListener> listeners = new ArrayList<CoordinateListener>();
 
 	private InputInterface inputInterface;
+	private Filter<Coordinate> filter;
 	
 	
 	/**
 	 * Create a new instance of an InputManager with specified inputs
 	 * @param inputInterface the instance of InputInterface to use
 	 */
-	public InputManager(InputInterface inputInterface) {
+	public InputManager(InputInterface inputInterface, Filter<Coordinate> filter) {
+		this.filter = filter;
 		this.inputInterface = inputInterface;
 		
 		setup();
@@ -43,7 +46,8 @@ public class InputManager {
 		inputInterface.addEventListener(new InputListener(){
 			@Override
 			public void handleInput(InputEvent e) {
-				fireEvent(e.getCoordinate());
+				Coordinate c = filter.filter(e.getCoordinate());
+				if(c != null) fireEvent(c);
 			}
 		});
 	}

@@ -1,8 +1,11 @@
 
+import coordinates.Coordinate;
 import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
 import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
+import filters.BasicBufferedFilter;
+import filters.Filter;
 import model.FiniteStateMachine;
 import recogniser.FiniteStateMachineManager;
 import ui.monitor.input.InputMonitor;
@@ -50,7 +53,11 @@ public class GestureRecogniser {
 		
 		// Change InputInterface depending on input requirements
 		InputInterface input = new FileInput(null);
-		inputManager = new InputManager(input); 
+		
+		// Change Filter to filter type required
+		Filter<Coordinate> filter = new BasicBufferedFilter();
+		
+		inputManager = new InputManager(input, filter); 
 		inputManager.addEventListener(new CoordinateListener() {
 			@Override
 			public void handleCoordinate(CoordinateEvent e) {
