@@ -20,7 +20,7 @@ import model.state.PseudoState;
  */
 public class FiniteStateMachine {
 	
-	private static final int DEFAULT_COORDINATE_REPOSITORY_SIZE = 40;
+	private static final int DEFAULT_COORDINATE_REPOSITORY_SIZE = 100;
 	
 	private List<AcceptingStateListener> listeners 
 		= new ArrayList<AcceptingStateListener>();
