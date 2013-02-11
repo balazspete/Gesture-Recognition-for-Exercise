@@ -61,7 +61,6 @@ public class FuzzyState {
 		double[] values = vector.getAll();
 		double base = values[firstIndex];
 		
-		System.out.println(base);
 		// Return no match, if the direction is opposite
 		if((base >= 0) != direction) return false;
 		
@@ -81,8 +80,6 @@ public class FuzzyState {
 			double high = factors[index] * base * baseHigh * highFactors[index];
 			
 			double value = values[index];
-			System.out.println(factors[index] +" "+ base  +" "+ baseLow  +" "+  lowFactors[index]);
-			System.out.println(value + " " + low + " " + high);
 			if(value < low || high < value) return false;
 			
 			index++;
