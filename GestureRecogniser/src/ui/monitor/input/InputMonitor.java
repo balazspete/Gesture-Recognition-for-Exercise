@@ -46,6 +46,8 @@ public class InputMonitor extends JFrame {
 	 */
 	private static final long serialVersionUID = 8902258483370822829L;
 	
+	private JFrame frame;
+	
 	private JPanel contentPane;
 	private InputCanvas canvas;
 	
@@ -77,11 +79,12 @@ public class InputMonitor extends JFrame {
 	 * Initialize the components
 	 */
 	private void initialize() {
-		setTitle("GestureRecogniser: Input Monitor");
-		setBounds(100, 100, 600, 360);
+		frame = new JFrame();
+		frame.setTitle("GestureRecogniser: Input Monitor");
+		frame.setBounds(100, 100, 600, 360);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		frame.setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
 		
@@ -154,7 +157,7 @@ public class InputMonitor extends JFrame {
 	 */
 	public void handleAcceptingState(AcceptingStateEvent e) {
 		canvas.addAcceptingStatePoint(coordinates.size());
-		paintComponents(getGraphics());
+		frame.paintComponents(frame.getGraphics());
 	}
 	
 	/**
@@ -176,9 +179,9 @@ public class InputMonitor extends JFrame {
 	 */
 	private void addCoordinate(Coordinate coordinate) {
 		coordinateCounter++;
-		
 		coordinates.add(coordinate);
-		this.setVisible(true);
+		
+		frame.setVisible(true);
 		
 		CoordinateImage image = new CoordinateImage(coordinates.size(), canvas.getHeight()-1, coordinates, 1);
 		canvas.replaceImage(image);
@@ -187,13 +190,16 @@ public class InputMonitor extends JFrame {
 		statesDisplay.setSize(d);
 		statesDisplay.setPreferredSize(d);
 		
-		paintComponents(getGraphics());
+		frame.paintComponents(frame.getGraphics());
 		
 		lblNumberOfInputsCouter.setText("" + coordinateCounter);
 		
 		if(tglbtnAutoScroll.isSelected()) scrollPane.getHorizontalScrollBar().setValue(image.getWidth());
 	}
 	
+	/**
+	 * Method to sync the horizontal scrollbard
+	 */
 	private void syncHorizontalScrollBars() {
 		scrollPane_1.getHorizontalScrollBar()
 			.setValue(scrollPane.getHorizontalScrollBar().getValue());
