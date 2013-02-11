@@ -1,5 +1,6 @@
 package recogniser;
 
+import java.awt.EventQueue;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -16,7 +17,7 @@ import model.FiniteStateMachine;
  * @author Balazs Pete
  *
  */
-public class FiniteStateMachineManager extends Thread {
+public class FiniteStateMachineManager {
 
 	private HashMap<FiniteStateMachine, Gesture> managees = new HashMap<FiniteStateMachine, Gesture>();
 	private Queue<Coordinate> coordinateQueue = new ConcurrentLinkedQueue<Coordinate>(); 
@@ -49,7 +50,23 @@ public class FiniteStateMachineManager extends Thread {
 	 */
 	public synchronized void input(Coordinate coordinate) {
 		coordinateQueue.add(coordinate);
-		run();
+		(new Thread(new Runnable(){
+			@Override
+			public void run() {
+				Coordinate coordinate = getFirstCoordinate();
+				for(FiniteStateMachine fsm : managees.keySet()) {
+					fsm.input(coordinate);
+				}
+			}
+		})).start();
+	}
+	
+	/**
+	 * Retrieve the first element in the coordinate queue
+	 * @return The first Coordinate
+	 */
+	private synchronized Coordinate getFirstCoordinate() {
+		return coordinateQueue.poll();
 	}
 	
 	/**
@@ -64,7 +81,6 @@ public class FiniteStateMachineManager extends Thread {
 	 * and clear the coordinates queue of the manager
 	 */
 	public void reset() {
-		interrupt();
 		clear();
 		for(FiniteStateMachine fsm : managees.keySet()) {
 			fsm.reset();
@@ -78,14 +94,6 @@ public class FiniteStateMachineManager extends Thread {
 	public void addAcceptingStateListener(AcceptingStateListener listener) {
 		for(FiniteStateMachine fsm : managees.keySet()) {
 			fsm.addEventListener(listener);
-		}
-	}
-	
-	@Override
-	public void run() {
-		Coordinate coordinate = coordinateQueue.poll();
-		for(FiniteStateMachine fsm : managees.keySet()) {
-			fsm.input(coordinate);
 		}
 	}
 	
