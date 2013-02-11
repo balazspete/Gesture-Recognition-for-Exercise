@@ -17,7 +17,7 @@ import coordinates.Coordinate;
  */
 public class FileInput extends InputInterface {
 
-	private static final int SLEEP_TIME = 100;
+	private static final int SLEEP_TIME = 20;
 	
 	private String filePath;
 	
