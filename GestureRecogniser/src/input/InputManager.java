@@ -23,14 +23,14 @@ public class InputManager {
 	private List<CoordinateListener> listeners = new ArrayList<CoordinateListener>();
 
 	private InputInterface inputInterface;
-	private Filter<Coordinate> filter;
+	private Filter filter;
 	
 	
 	/**
 	 * Create a new instance of an InputManager with specified inputs
 	 * @param inputInterface the instance of InputInterface to use
 	 */
-	public InputManager(InputInterface inputInterface, Filter<Coordinate> filter) {
+	public InputManager(InputInterface inputInterface, Filter filter) {
 		this.filter = filter;
 		this.inputInterface = inputInterface;
 		

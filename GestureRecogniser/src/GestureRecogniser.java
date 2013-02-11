@@ -1,11 +1,15 @@
 
+import java.util.Vector;
+
 import coordinates.Coordinate;
 import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
 import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
+import exceptions.InvalidInputException;
 import filters.BasicBufferedFilter;
 import filters.Filter;
+import filters.SimpleKalmanFilter;
 import model.FiniteStateMachine;
 import recogniser.FiniteStateMachineManager;
 import ui.monitor.input.InputMonitor;
@@ -55,9 +59,11 @@ public class GestureRecogniser {
 		InputInterface input = new FileInput(null);
 		
 		// Change Filter to filter type required
-		Filter<Coordinate> filter = new BasicBufferedFilter();
+		Filter filter = new SimpleKalmanFilter();
+		Filter filter1 = new BasicBufferedFilter(9, filter);
 		
-		inputManager = new InputManager(input, filter); 
+		// Set up the input manager
+		inputManager = new InputManager(input, filter1);
 		inputManager.addEventListener(new CoordinateListener() {
 			@Override
 			public void handleCoordinate(CoordinateEvent e) {
@@ -65,7 +71,7 @@ public class GestureRecogniser {
 			}
 		});
 		
-		
+		// Set up the input monitor
 		inputMonitor = new InputMonitor(inputManager);
 		fsmm.addAcceptingStateListener(new AcceptingStateListener() {
 			@Override
