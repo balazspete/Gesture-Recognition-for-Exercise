@@ -62,7 +62,9 @@ public class CreateModel {
 		Vector<PseudoState> states = new Vector<PseudoState>();
 		
 		for(int i = 1; i < points.size(); i++) {
-			states.add(PseudoState.getDifference(points.get(i - 1), points.get(i)));
+			PseudoState s = PseudoState.getDifference(points.get(i - 1), points.get(i));
+			
+			states.add(s);
 		}
 		
 		return states;

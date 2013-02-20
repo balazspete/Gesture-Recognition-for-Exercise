@@ -1,5 +1,8 @@
 package model.state;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import coordinates.DisplacementVector;
 
 import exceptions.InvalidDimensionException;
@@ -22,7 +25,13 @@ public class FuzzyState {
 	// true for positive, false for negative
 	private boolean direction = true;
 	
+	private int minimumBase = 0; 
+	
 	private double[] factors = new double[] { 0, 0, 0 };
+	
+	private boolean checkDirection = true;
+	
+	private double allowedAdditionalError = 1;
 	
 	/**
 	 * Create an instance of FuzzyState from the specified PseudoState
@@ -30,6 +39,36 @@ public class FuzzyState {
 	 */
 	public FuzzyState(PseudoState state) {
 		create(state);
+	}
+	
+	/**
+	 * Create an instance of FuzzyState from the specified PseudoState with a minimum base value
+	 * @param state The PseudoState from which the FuzzyState will be created form
+	 * @param minimumBase The minimum value of the base axis in matching
+	 */
+	public FuzzyState(PseudoState state, int minimumBase) {
+		this.minimumBase = minimumBase;
+		create(state);
+	}
+	
+	/**
+	 * Create an instance of FuzzyState from the specified PseudoState with a minimum base value
+	 * @param state The PseudoState from which the FuzzyState will be created form
+	 * @param minimumBase The minimum value of the base axis in matching
+	 * @param allowedAdditionalError The allowed additional error
+	 */
+	public FuzzyState(PseudoState state, int minimumBase, double allowedAdditionalError) {
+		this.minimumBase = minimumBase;
+		this.allowedAdditionalError = allowedAdditionalError;
+		create(state);
+	}
+	
+	/**
+	 * Set the minimum base value of the state
+	 * @param value The value of the minimum base
+	 */
+	public void setMinimumBase(int value) {
+		this.minimumBase = value;
 	}
 	
 	/**
@@ -53,16 +92,29 @@ public class FuzzyState {
 	}
 	
 	/**
+	 * Set the direction of check of the axes
+	 * @param direction True if axes are to be checked in the order {x, y, z}, false if to be checked in the order {z, y, x}
+	 */
+	public void setAxisCheckDirection(boolean direction) {
+		this.checkDirection = direction;
+	}
+	
+	/**
 	 * Match the DisplacementVector to the FuzzyState, to determine if it satisfies the state's condition 
 	 * @param vector the DisplacementVector to match
 	 * @return True if conditions satisfied, false otherwise
 	 */
 	public boolean match(DisplacementVector vector) {
-		double[] values = vector.getAll();
+		double[] values = checkDirection ? vector.getAll() : vector.getAllInReverse();
 		double base = values[firstIndex];
 		
 		// Return no match, if the direction is opposite
-		if((base >= 0) != direction) return false;
+		if(base !=0 && (base > 0) != direction) return false;
+
+		// return no match, if the base does not meet the minimum value
+		if((direction && base < minimumBase) || (!direction && base < 0 && base > minimumBase)) return false;
+		
+		
 		
 		double baseLow = lowFactors[firstIndex];
 		double baseHigh = highFactors[firstIndex];
@@ -76,10 +128,14 @@ public class FuzzyState {
 				continue;
 			}
 			
-			double low  = factors[index] * base * baseLow  *  lowFactors[index];
-			double high = factors[index] * base * baseHigh * highFactors[index];
+			double _temp1  = factors[index] * base * baseLow  *  lowFactors[index];
+			double _temp2 = factors[index] * base * baseHigh * highFactors[index];			
+
+			double high = Math.max(_temp1, _temp2) * (1+allowedAdditionalError);
+			double low = Math.min(_temp1, _temp2) * (1-allowedAdditionalError);
 			
 			double value = values[index];
+			System.out.println(index + " | " + low + " " + value + " " + high);
 			if(value < low || high < value) return false;
 			
 			index++;
@@ -97,7 +153,7 @@ public class FuzzyState {
 		double factor = 1;
 		
 		try {
-			factor = setupBase(state.getX(), 0);
+			factor = setupBase(checkDirection ? state.getX() : state.getZ(), 0);
 		} catch (InvalidDimensionException e1) {
 			factors[0] = 0;
 		}
@@ -115,7 +171,7 @@ public class FuzzyState {
 		}
 		
 		try {
-			FuzzyNumber z = state.getZ();
+			FuzzyNumber z = checkDirection ? state.getZ() : state.getX();
 			
 			if(firstIndex != -1) {
 				setupNumber(z, 2, factor);
@@ -134,7 +190,12 @@ public class FuzzyState {
 	 * @param factor The factor of the base number
 	 */
 	private void setupNumber(FuzzyNumber n, int index, double factor) {
-		double newFactor = n.getValue() / factor;
+		double newFactor;
+		if(factor == 0) {
+			newFactor = 0;
+		} else {
+			newFactor = n.getValue() / factor;
+		}
 		factors[index] = newFactor;
 		
 		lowFactors[index] = 1.0 - n.getError();
@@ -149,7 +210,7 @@ public class FuzzyState {
 	 */
 	private double setupBase(FuzzyNumber n, int index) {
 		double factor = 1;
-		firstIndex = 0;
+		firstIndex = index;
 		
 		factor = n.getValue();
 		factors[index] = 1;
