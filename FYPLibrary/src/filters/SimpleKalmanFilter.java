@@ -15,9 +15,13 @@ public class SimpleKalmanFilter implements Filter {
 	 *
 	 */
 	private class SimpleKalmanFilterHelper {
-		private double Q = 0.1;
-		private double R = 0.1;
-		private double P = 1, X = 0, K;
+//		private double Q = 0.1;
+//		private double R = 0.00001;
+//		private double P = 0.9, X = 0, K;
+		
+		private double Q = 1;
+		private double R = 0.001;
+		private double P = 0.8, X = 0, K;
 
 		/**
 		 * Update the inner variables
@@ -54,18 +58,22 @@ public class SimpleKalmanFilter implements Filter {
 		x = new SimpleKalmanFilterHelper();
 		y = new SimpleKalmanFilterHelper();
 		z = new SimpleKalmanFilterHelper();
+		this.other = other;
 	}
 	
 	@Override
 	public Coordinate filter(Coordinate coordinate) {
-		Coordinate c = new Coordinate(
-				x.update(coordinate.getX()),
-				y.update(coordinate.getY()),
-				z.update(coordinate.getZ()));
+		Coordinate c = coordinate; 
 		if(other != null) {
 			c = other.filter(c);
-		}
-		return c;
+		} 
+		
+		if(c == null) return null;
+		
+		return new Coordinate(
+				x.update(c.getX()),
+				y.update(c.getY()),
+				z.update(c.getZ()));
 	}
 
 }

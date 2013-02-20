@@ -10,52 +10,59 @@ import exceptions.InvalidInputException;
  * @author Balazs Pete
  *
  */
-public class BasicBufferedFilter implements Filter {
-	
-	Vector<Coordinate> buffer = new Vector<Coordinate>();
-	
-	private int bufferSize = 3;
-	private Filter other = null;
+public class BasicBufferedFilter extends BufferedFilter {
 	
 	/**
-	 * Create a new instance of BasicLowPassFilter
+	 * Create a new instance of BasicBufferedFilter
 	 * @param filterSize The number of neighbors to consider -1
-	 * @throws InvalidInputException An exception thrown when the input is an even number
 	 */
-	public BasicBufferedFilter(int sampleSize) throws InvalidInputException { 
-		if(sampleSize%2==0) throw new InvalidInputException("Input must be an odd number");
+	public BasicBufferedFilter(int sampleSize) { 
 		this.bufferSize = sampleSize;
 	}
 	
+	/**
+	 * Create a new instance of BasicBufferedFilter with a specified preprocessor
+	 * @param filterSize The number of neighbors to consider -1
+	 * @param other The preprocessor filter
+	 */
 	public BasicBufferedFilter(int sampleSize, Filter other) { 
 		this.bufferSize = sampleSize;
 	}
 
 	@Override
 	public Coordinate filter(Coordinate coordinate) {
+		if(other != null) coordinate = other.filter(coordinate);
+		
 		buffer.add(coordinate);
-		
 		if(buffer.size() < bufferSize) return null;
-		
+
 		int middleIndex = bufferSize/2 + 1;
+		Coordinate c = getAverageOfNeighbours(middleIndex);
+		buffer.remove(middleIndex);
+		buffer.add(middleIndex, c);
+		
+		return buffer.remove(0);
+	}
+	
+	/**
+	 * A method to alter the coordinate to be the average of its neighbors
+	 * @param toFilter The index of the Coordinate to be filtered
+	 * @return The new Coordinate
+	 */
+	protected Coordinate getAverageOfNeighbours(int toFilter) {
 		double x=0, y=0, z=0;
+		
 		for(int i = 0; i < bufferSize; i++) {
-			if(i == middleIndex) continue;
+			if(i == toFilter) continue;
 			Coordinate c = buffer.get(i);
 			x += c.getX();
 			y += c.getY();
 			z += c.getZ();
 		}
 		
-		buffer.remove(middleIndex);
-		buffer.add(middleIndex, new Coordinate(
+		return new Coordinate(
 				x / (bufferSize-1),
 				y / (bufferSize-1),
-				z / (bufferSize-1)));
-		
-		Coordinate c = buffer.remove(0);
-		if(other != null) c = other.filter(c);
-		return c;
+				z / (bufferSize-1));
 	}
-	
 }
