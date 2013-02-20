@@ -47,10 +47,18 @@ public class Coordinate {
 	
 	/**
 	 * Get all Coordinates
-	 * @return An array containing all coordinates  in the form: { x, y, z}
+	 * @return An array containing all coordinates  in the form: { x, y, z }
 	 */
 	public double[] getAll() {
 		return new double[] { x, y, z };
+	}
+	
+	/**
+	 * Get all coordinates in reverse order
+	 * @return An array containing all coordinates  in the form: { z, y, x }
+	 */
+	public double[] getAllInReverse() {
+		return new double[] { z, y, x };
 	}
 	
 	/**
