@@ -27,6 +27,8 @@ import tools.InputParser;
 
 import coordinates.Coordinate;
 import coordinates.CoordinateImage;
+import filters.CorrectingBufferedFilter;
+import filters.Filter;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -266,7 +268,15 @@ public class MainWindow extends JFrame {
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			String path = jfc.getSelectedFile().getPath();
 			this.setTitle(windowTitle + " - Opened File: \"" + path + "\"");
-			coordinates = InputParser.parse(path);
+//			coordinates = InputParser.parse(path);
+			Vector<Coordinate> temp = InputParser.parse(path);
+			coordinates = new Vector<Coordinate>();
+			Filter filter = new CorrectingBufferedFilter(9);
+			while(temp.size() > 0) {
+				Coordinate c = filter.filter(temp.remove(0));
+				if(c != null)coordinates.add(c);
+			}
+//			System.out.println(temp.size() +" "+coordinates.size());
 			createImageAndLoad();
 		}
 	}

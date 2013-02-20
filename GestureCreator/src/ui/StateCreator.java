@@ -74,6 +74,7 @@ public class StateCreator extends JFrame {
 		initialize(0);
 		this.canvas = canvas;
 		this.points = points;
+		spinnerIndex.setValue(points.size());
 	}
 	
 	/**
@@ -87,6 +88,7 @@ public class StateCreator extends JFrame {
 		this.canvas = canvas;
 		this.points = points;
 		updateImage();
+		spinnerIndex.setValue(points.size());
 	}
 	
 	/**
