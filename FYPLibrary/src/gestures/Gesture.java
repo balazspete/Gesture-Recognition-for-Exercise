@@ -8,33 +8,52 @@ import model.state.FuzzyState;
 import model.state.PseudoState;
 
 /**
- * A class defining the skeleton of a Gesture
+ * An interface defining the skeleton of a Gesture
  * @author Balazs Pete
  *
  */
-public abstract class Gesture {
+public interface Gesture {
 
 	/**
-	 * The Gesture model created by the GestureCreator
+	 * Get the model describing the gesture
+	 * @return The model
 	 */
-	public static double[][] GESTURE_MODEL = new double[][] {};
+	public double[][] getGestureModel();
 	
 	/**
-	 * Create a Gesture representation of FuzzyStates from a Gesture model
-	 * @param model The gesture model
-	 * @param axes The boolean array defining which axes are enabled (0: x-axis, 1: y-axis, 2: z-axis)
-	 * @return The FuzzyState representation
+	 * Get the list of boolean values determining whether an axis is considered
+	 * @return The boolean array (0: x-axis, 1: y-axis, 2: z-axis)
 	 */
-	public static List<FuzzyState> createRepresentation(double[][] model, boolean[] axes) {
-		LinkedList<FuzzyState> states = new LinkedList<FuzzyState>();
-		
-		for(double[] row : model) {
-			states.add(new FuzzyState(new PseudoState(
-					axes[0] ? new FuzzyNumber(row[0], row[1]) : null,
-					axes[1] ? new FuzzyNumber(row[2], row[3]) : null,
-					axes[2] ? new FuzzyNumber(row[4], row[5]) : null)));
-		}
-		
-		return states;
-	}
+	public boolean[] getEnabledAxes();
+	
+	/**
+	 * Get the minimum value of the base
+	 * @return The minimum value
+	 */
+	public int getMinimumBaseValue();
+	
+	/**
+	 * Get the minimum time in milliseconds that needs to be passed before allowing the recognition of the gesture
+	 * @return The value
+	 */
+	public int getMinimumNoReactionTime();
+	
+	/**
+	 * Get the maximum time in milliseconds allowed before the FSM needs to be reset
+	 * @return The value
+	 */
+	public int getMaximumReactionTime();
+	
+	/**
+	 * Get the order in which the axes should be checked
+	 * @return True if check order is { x, y, z }, false if check order is { z, y, x }
+	 */
+	public boolean getAxisCheckOrder();
+	
+	/**
+	 * Get the allowed additional error of the gesture
+	 * @return The allowed additional error [0:1]
+	 */
+	public double getAllowedAdditionalError();
+	
 }
