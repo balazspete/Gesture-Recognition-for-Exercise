@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
+import filters.BufferedFilter;
+import filters.Filter;
+
 /**
  * Class to represent the 
  * @author balazs Pete
@@ -33,7 +36,35 @@ public class CoordinateSeries {
 	 */
 	public CoordinateSeries(Vector<Coordinate> series) {
 		this.series = series;
+		initialize();
+	}
+	
+	/**
+	 * Create an instance of CoordinateSeries while applying a specific filter to the coordinates
+	 * @param series list of Coordinates
+	 * @param filter The filter to be applied to the Coordinates
+	 */
+	public CoordinateSeries(Vector<Coordinate> series, Filter filter) {
+		Vector<Coordinate> updatedSeries = new Vector<Coordinate>();
 		
+		while(series.size() > 0) {
+			Coordinate c = filter.filter(series.remove(0));
+			if(c != null) updatedSeries.add(c);
+		}
+		
+		if(filter instanceof BufferedFilter) {
+			Vector<Coordinate> buffer = ((BufferedFilter) filter).getBuffer();
+			while(buffer.size() > 0) updatedSeries.add(buffer.remove(0));
+		}
+		
+		this.series = updatedSeries;
+		initialize();
+	}
+	
+	/**
+	 * Initialize the variables of this instance
+	 */
+	private void initialize() {
 		Vector<Double> x = new Vector<Double>(), 
 				y = new Vector<Double>(), 
 				z = new Vector<Double>();
