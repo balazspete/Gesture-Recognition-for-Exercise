@@ -52,17 +52,4 @@ public class InputParser {
 		
 		return new Coordinate(Double.parseDouble(r[i]), Double.parseDouble(r[i + 1]), Double.parseDouble(r[i + 2]));
 	}
-	
-	/**
-	 * Run the parser
-	 * @param args
-	 */
-	public static void main(String[] args){
-		Vector<Coordinate> r = parse("pete1.txt");
-		for(Coordinate c : r){
-			System.out.println(c.toString());
-		}
-	
-	}
-	
 }

@@ -36,6 +36,8 @@ import javax.swing.JCheckBox;
 
 import exceptions.InsufficentModelDataError;
 import exceptions.InvalidDimensionException;
+import filters.CorrectingBufferedFilter;
+import filters.Filter;
 
 import tools.CreateModel;
 import tools.InputParser;
@@ -419,6 +421,7 @@ public class MainWindow {
 		
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			File[] files = jfc.getSelectedFiles();
+			Filter filter = new CorrectingBufferedFilter(9);
 			
 			for(File file : files) {
 				String path = file.getPath();
