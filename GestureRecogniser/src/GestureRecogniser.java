@@ -1,20 +1,17 @@
 
-import java.util.Vector;
+import java.util.Arrays;
 
-import coordinates.Coordinate;
 import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
 import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
-import exceptions.InvalidInputException;
-import filters.BasicBufferedFilter;
+import filters.CorrectingBufferedFilter;
 import filters.Filter;
 import filters.SimpleKalmanFilter;
 import model.FiniteStateMachine;
 import recogniser.FiniteStateMachineManager;
 import ui.monitor.input.InputMonitor;
-import gestures.Gesture;
-import gestures.Gesture_LeftToRight;
+import gestures.*;
 import input.FileInput;
 import input.InputInterface;
 import input.InputManager;
@@ -50,17 +47,14 @@ public class GestureRecogniser {
 	 */
 	public void start() {
 		// Add FiniteStateMachines to the FSM manager
-		fsmm.add(new FiniteStateMachine(
-				Gesture.createRepresentation(Gesture_LeftToRight.GESTURE_MODEL, 
-						Gesture_LeftToRight.ENABLED_AXES)), 
-				new Gesture_LeftToRight());
+		addGestures();
 		
 		// Change InputInterface depending on input requirements
 		InputInterface input = new FileInput(null);
 		
 		// Change Filter to filter type required
-		Filter filter = new SimpleKalmanFilter();
-		Filter filter1 = new BasicBufferedFilter(9, filter);
+		Filter filter = new CorrectingBufferedFilter(7);
+		Filter filter1 = new SimpleKalmanFilter(filter);
 		
 		// Set up the input manager
 		inputManager = new InputManager(input, filter1);
@@ -83,5 +77,47 @@ public class GestureRecogniser {
 		
 	}
 	
+	private void addGestures() {
+//		// FAILED
+//		// LeftToRight
+//		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
+//		
+//		// PASSED
+//		// RightToLeft
+//		fsmm.add(new FiniteStateMachine(new Gesture_RightToLeft()));
+//		
+//		// PASSED
+//		// Upwards
+//		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
+//		
+//		// FAILED
+//		// Stop
+//		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
+//
+//		// PASSED
+//		// Start
+//		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
+//		
+//		// NOPE		
+//		// Wave
+//		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
+//		
+//		// PASSED
+//		// 1
+//		fsmm.add(new FiniteStateMachine(new Gesture_1()));
+//		
+//		// NOPE
+//		// 2
+//		fsmm.add(new FiniteStateMachine(new Gesture_2()));
+		
+		// 3
+		fsmm.add(new FiniteStateMachine(new Gesture_3()));
+		
+//		// 3
+//		Gesture_3 g = new Gesture_3();
+//		g.ENABLED_AXES = new boolean[]{false,true,false};
+//		fsmm.add(new FiniteStateMachine(g));
+//		System.out.println(Arrays.toString(g.ENABLED_AXES));
+	}
 
 }

@@ -2,6 +2,7 @@ package recogniser;
 
 import java.awt.EventQueue;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -19,7 +20,7 @@ import model.FiniteStateMachine;
  */
 public class FiniteStateMachineManager {
 
-	private HashMap<FiniteStateMachine, Gesture> managees = new HashMap<FiniteStateMachine, Gesture>();
+	private LinkedList<FiniteStateMachine> managees = new LinkedList<FiniteStateMachine>();
 	private Queue<Coordinate> coordinateQueue = new ConcurrentLinkedQueue<Coordinate>(); 
 	
 	/**
@@ -34,14 +35,14 @@ public class FiniteStateMachineManager {
 	 * @param fsm The FiniteStateMachine
 	 * @param gesture The corresponding Gesture
 	 */
-	public void add(FiniteStateMachine fsm, Gesture gesture) {
+	public void add(FiniteStateMachine fsm) {
 		fsm.addEventListener(new AcceptingStateListener() {
 			@Override
 			public void handleAcceptingState(AcceptingStateEvent e) {
 				processAcceptingStateEvent(e);
 			}
 		});
-		managees.put(fsm, gesture);
+		managees.add(fsm);
 	}
 	
 	/**
@@ -54,7 +55,7 @@ public class FiniteStateMachineManager {
 			@Override
 			public void run() {
 				Coordinate coordinate = getFirstCoordinate();
-				for(FiniteStateMachine fsm : managees.keySet()) {
+				for(FiniteStateMachine fsm : managees) {
 					fsm.input(coordinate);
 				}
 			}
@@ -82,7 +83,7 @@ public class FiniteStateMachineManager {
 	 */
 	public void reset() {
 		clear();
-		for(FiniteStateMachine fsm : managees.keySet()) {
+		for(FiniteStateMachine fsm : managees) {
 			fsm.reset();
 		}
 	}
@@ -92,7 +93,7 @@ public class FiniteStateMachineManager {
 	 * @param listener The AcceptinStateListener to add to the FSMs.
 	 */
 	public void addAcceptingStateListener(AcceptingStateListener listener) {
-		for(FiniteStateMachine fsm : managees.keySet()) {
+		for(FiniteStateMachine fsm : managees) {
 			fsm.addEventListener(listener);
 		}
 	}
@@ -102,7 +103,7 @@ public class FiniteStateMachineManager {
 	 * @param e The AcceptingStateEvent to be handled
 	 */
 	private void processAcceptingStateEvent(AcceptingStateEvent e) {
-		Gesture g = managees.get((FiniteStateMachine) e.getSource());
+		Gesture g = ((FiniteStateMachine) e.getSource()).getGesture();
 		reset();
 		
 		System.err.println(g.getClass().getName());

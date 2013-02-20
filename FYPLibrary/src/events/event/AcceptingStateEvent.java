@@ -1,5 +1,7 @@
 package events.event;
 
+import gestures.Gesture;
+
 import java.util.EventObject;
 
 /**
@@ -13,6 +15,8 @@ public class AcceptingStateEvent extends EventObject {
 	 * Automatically generated serialVersionUID
 	 */
 	private static final long serialVersionUID = -3796844397739483225L;
+	
+	protected Gesture gesture;
 
 	/**
 	 * Create a new instance of the AcceptingStateEvent object
