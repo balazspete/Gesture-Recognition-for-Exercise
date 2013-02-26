@@ -574,7 +574,7 @@ public class MainWindow {
 		
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			try{
-				CreateModel.save(jfc.getSelectedFile(), CreateModel.create(statePoints));
+				CreateModel.save(jfc.getSelectedFile(), CreateModel.create(statePoints, canvas.getHeight()));
 				
 			} catch (InsufficentModelDataError e) {
 				System.err.println("Not enough states to generate a model...");

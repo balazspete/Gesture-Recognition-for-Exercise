@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import coordinates.Coordinate;
 import coordinates.CoordinateRepository;
 import coordinates.DisplacementVector;
@@ -24,13 +26,14 @@ import model.state.PseudoState;
  */
 public class FiniteStateMachine {
 	
-	private static final int DEFAULT_COORDINATE_REPOSITORY_SIZE = 100;
+	private static final int DEFAULT_COORDINATE_REPOSITORY_SIZE = 50;
 	
 	private List<AcceptingStateListener> listeners 
 		= new ArrayList<AcceptingStateListener>();
 
 	private List<FuzzyState> states;
-	private int currentState = 0;
+	private final int groundState = 0;
+	private int currentState = groundState;
 	
 	private CoordinateRepository coordinates = 
 			new CoordinateRepository(DEFAULT_COORDINATE_REPOSITORY_SIZE);
@@ -46,12 +49,16 @@ public class FiniteStateMachine {
 	 * @param states The list of states to be used by this instance
 	 */
 	public FiniteStateMachine(Gesture gesture) {
-		this.states = GestureRepresentation.create(gesture.getGestureModel(), gesture.getEnabledAxes(), gesture.getAxisCheckOrder());
-		this.states.get(0).setMinimumBase(gesture.getMinimumBaseValue());
+		this.states = GestureRepresentation.create(
+				gesture.getGestureModel(), 
+				gesture.getEnabledAxes(), 
+				gesture.getAxisCheckOrder(), 
+				gesture.getAllowedAdditionalError(),
+				gesture.areAxesIndependent());
 		this.minimumNoReactionTime = gesture.getMinimumNoReactionTime();
 		this.maximumReactionTime = gesture.getMaximumReactionTime();
 		this.gesture = gesture;
-		//states.add(0, new FuzzyState(new PseudoState(null, null, null)));
+		System.out.println(Arrays.toString(states.toArray()));
 	}
 	
 	/**
@@ -66,9 +73,17 @@ public class FiniteStateMachine {
 	 * Reset the FSM to its base state
 	 */
 	public void reset() {
-		currentState = 0;
+		reset(System.currentTimeMillis());
+	}
+	
+	/**
+	 * Reset the FSM to its base state
+	 * @param lastEventTime Specify lastEventTime
+	 */
+	public void reset(long lastEventTime) {
+		currentState = groundState;
 		coordinates.empty();
-		lastEventTime = System.currentTimeMillis();
+		this.lastEventTime = lastEventTime;
 	}
 	
 	/**
@@ -127,39 +142,40 @@ public class FiniteStateMachine {
 	 * @param coordinate The coordinate to match
 	 */
 	private synchronized void match(Coordinate coordinate) {
-		if(currentState != 0 && System.currentTimeMillis()-lastEventTime <= minimumNoReactionTime) return;
-		if(System.currentTimeMillis()-lastEventTime > maximumReactionTime) reset();
-		System.out.println(currentState-1);
-		if(currentState!=0 && currentState == states.size()) return;
-		int size = coordinates.size();
+		long time = System.currentTimeMillis();
 		
-		if(size == 0) {
-			coordinates.add(coordinate);
-		} else if(currentState > 0) {
-			matchHelper(coordinate);
+		System.out.println("################ - "+coordinates.size() +" " + coordinates.maxSize());
+		// Don't match if minimum waiting time has not passed yet
+		if(currentState == groundState && time-lastEventTime <= minimumNoReactionTime) return;
+		// Reset FSM if gesture has timed out
+		if(time-lastEventTime > maximumReactionTime) reset(time-minimumNoReactionTime);
+		//if(currentState!=0 && currentState == states.size()) return;
+
+		System.out.println(currentState);
+		
+		if(currentState > groundState) {
+			matchHelper(states.get(currentState), coordinates.getLast(), coordinate);
 		} else {
-			// Case for the initial state
-			for(int i = coordinates.size() -1; i >= 0; i--) {
-				if(matchHelper(coordinate)) return;
+			coordinates.store(coordinate);
+			for(int i = coordinates.size() -1; i >= groundState; i--) {
+				if(matchHelper(states.get(currentState), coordinates.get(i), coordinate)) return;
 			}
-			
 		}
 	}
 	
 	/**
 	 * A helper method for {@link #match() match() function}
+	 * @param inRepo Coordinate in the repository
 	 * @param coordinate The coordinate
 	 * @return The match result
 	 */
-	private boolean matchHelper(Coordinate coordinate) {
+	private boolean matchHelper(FuzzyState state, Coordinate inRepo, Coordinate coordinate) {
 		DisplacementVector vector = 
-				DisplacementVector.getVector(coordinates.getLast(), coordinate);
-		boolean result = states.get(currentState).match(vector);
+				DisplacementVector.getVector(inRepo, coordinate);
+		boolean result = state.match(vector);
 		
 		if(result) {
 			goToNextState();
-		} else {
-			if(currentState == 0) lastEventTime = System.currentTimeMillis();
 		}
 		
 		return result;
@@ -170,8 +186,10 @@ public class FiniteStateMachine {
 	 */
 	private void goToNextState() {
 		currentState++;
-		if(currentState==1) lastEventTime = System.currentTimeMillis();
+		if(currentState==groundState+1) lastEventTime = System.currentTimeMillis();
 		if(currentState == states.size()) fireEvent();
+		
+		
 		System.out.println("Increased state: " + currentState + "/" + states.size());
 	}
 }

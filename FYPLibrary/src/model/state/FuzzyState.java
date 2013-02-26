@@ -18,20 +18,21 @@ public class FuzzyState {
 	
 	private int firstIndex = -1;
 	
-	private double[] lowFactors = new double[] { 0, 0, 0 };
-	private double[] highFactors = new double[] { 0, 0, 0 };
+	private double[] lowFactors = new double[] { 1, 1, 1 };
+	private double[] highFactors = new double[] { 1, 1, 1 };
 	
 	// The direction factor indicates the direction of the motion, 
 	// true for positive, false for negative
 	private boolean direction = true;
 	
-	private int minimumBase = 0; 
+	private double minimumBase = 0; 
 	
 	private double[] factors = new double[] { 0, 0, 0 };
 	
 	private boolean checkDirection = true;
 	
 	private double allowedAdditionalError = 1;
+	private boolean independentAxes = false;
 	
 	/**
 	 * Create an instance of FuzzyState from the specified PseudoState
@@ -67,8 +68,16 @@ public class FuzzyState {
 	 * Set the minimum base value of the state
 	 * @param value The value of the minimum base
 	 */
-	public void setMinimumBase(int value) {
+	public void setMinimumBase(double value) {
 		this.minimumBase = value;
+	}
+	
+	/**
+	 * Set the amount of allowed additional error
+	 * @param error The value of the additional allowed error
+	 */
+	public void setAllowedAdditionalError(double error) {
+		this.allowedAdditionalError = error;
 	}
 	
 	/**
@@ -100,22 +109,76 @@ public class FuzzyState {
 	}
 	
 	/**
+	 * Get a String representation of the Object
+	 */
+	public String toString() {
+		return direction + " | " +Arrays.toString(factors);
+	}
+	
+	/**
 	 * Match the DisplacementVector to the FuzzyState, to determine if it satisfies the state's condition 
 	 * @param vector the DisplacementVector to match
 	 * @return True if conditions satisfied, false otherwise
 	 */
-	public boolean match(DisplacementVector vector) {
+	public synchronized boolean match(DisplacementVector vector) {
+		if(independentAxes) {
+			return matchHelper_IndependentAxes(vector);
+		} else {
+			return matchHelper_DependentAxes(vector);
+		}
+	}
+	
+	/**
+	 * Helper method containing the matching process for independent axes
+	 * @param vector the DisplacementVector to match
+	 * @return True if conditions satisfied, false otherwise
+	 */
+	private boolean matchHelper_IndependentAxes(DisplacementVector vector) {
+		double[] values = checkDirection ? vector.getAll() : vector.getAllInReverse();
+		System.out.println("--");
+		
+		int index = firstIndex;
+		while(index < values.length) {
+			// If the corresponding factor is 0, the axis is unused hence skip it
+			if(factors[index] == 0) {
+				index++;
+				continue;
+			}
+			
+			// Return no match, if the direction is opposite
+			double axis = factors[index] * (direction ? 1 : -1);
+			System.out.println((axis > 0) +" - "+ (values[index] > 0));
+			if(axis > 0 != values[index] > 0) return false;
+
+			// Return no match, if the base does not meet the minimum value
+			if(Math.abs(minimumBase) > Math.abs(axis)) return false;
+			
+			System.out.println(minimumBase +" "+axis );
+			index++;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Helper method containing the matching process for dependent axes
+	 * @param vector the DisplacementVector to match
+	 * @return True if conditions satisfied, false otherwise
+	 */
+	private boolean matchHelper_DependentAxes(DisplacementVector vector) {
 		double[] values = checkDirection ? vector.getAll() : vector.getAllInReverse();
 		double base = values[firstIndex];
 		
+		System.out.println("-\n"+direction + " " + base + " " + minimumBase);
+		
 		// Return no match, if the direction is opposite
-		if(base !=0 && (base > 0) != direction) return false;
+		if(base == 0 || (base > 0) != direction) return false;
+		System.out.println(Arrays.toString(values) + " " + Arrays.toString(factors));
 
-		// return no match, if the base does not meet the minimum value
-		if((direction && base < minimumBase) || (!direction && base < 0 && base > minimumBase)) return false;
-		
-		
-		
+		// Return no match, if the base does not meet the minimum value
+		if(Math.abs(minimumBase) > Math.abs(base)) return false;
+
+		System.out.println("..-..");
 		double baseLow = lowFactors[firstIndex];
 		double baseHigh = highFactors[firstIndex];
 		
@@ -123,26 +186,38 @@ public class FuzzyState {
 		// If value is not in range (between low and high) then return no match
 		int index = firstIndex + 1;
 		while(index < DIMENSIONS) {
+			// If the corresponding factor is 0, the axis is unused hence skip it
 			if(factors[index] == 0) {
 				index++;
 				continue;
 			}
 			
-			double _temp1  = factors[index] * base * baseLow  *  lowFactors[index];
-			double _temp2 = factors[index] * base * baseHigh * highFactors[index];			
+			double _temp1  = factors[index] * base * baseLow  *  lowFactors[index] * (1-allowedAdditionalError);
+			double _temp2 = factors[index] * base * baseHigh * highFactors[index] * (1+allowedAdditionalError);			
 
-			double high = Math.max(_temp1, _temp2) * (1+allowedAdditionalError);
-			double low = Math.min(_temp1, _temp2) * (1-allowedAdditionalError);
+			double high = Math.max(_temp1, _temp2);
+			double low = Math.min(_temp1, _temp2);
 			
-			double value = values[index];
+			double value = values[index];// * (index%2==1 ? -1 : 1);
+			
+			// If the value is not within the required bounds, return no match
 			System.out.println(index + " | " + low + " " + value + " " + high);
 			if(value < low || high < value) return false;
 			
+			
 			index++;
 		}
-		
+		System.out.println(Arrays.toString(values));
 		// If all conditions passed (reached this point), the coordinate is a match
 		return true;
+	}
+	
+	/**
+	 * Set whether the axes are matched independently
+	 * @param isIndependent True if axes are to be matched independently, false otherwise
+	 */
+	public void setIndependentAxes(boolean isIndependent) {
+		this.independentAxes = isIndependent;
 	}
 	
 	/**
@@ -197,9 +272,10 @@ public class FuzzyState {
 			newFactor = n.getValue() / factor;
 		}
 		factors[index] = newFactor;
-		
-		lowFactors[index] = 1.0 - n.getError();
-		highFactors[index] = 1.0 + n.getError();
+
+		double error = n.getError()/100;
+		lowFactors[index] = 1.0 - error;
+		highFactors[index] = 1.0 + error;
 	}
 	
 	/**
@@ -216,8 +292,9 @@ public class FuzzyState {
 		factors[index] = 1;
 		direction = (factor >= 0);
 		
-		lowFactors[index] = 1.0 - n.getError();
-		highFactors[index] = 1.0 + n.getError();
+		double error = n.getError()/100;
+		lowFactors[index] = 1.0 - error;
+		highFactors[index] = 1.0 + error;
 		
 		return factor;
 	}

@@ -27,9 +27,20 @@ public class CreateModel {
 	 * @throws InsufficentModelDataError thrown if the input set contains less than two points
 	 */
 	public static Vector<PseudoState> create(Vector<FuzzyPoint> points) throws InsufficentModelDataError {
+		return create(points, 1);
+	}
+	
+	/**
+	 * Create a model (a list of PseudoStates) based on a set of FuzzyPoints
+	 * @param points the set of FuzzyPoints
+	 * @param scale the scaling factor
+	 * @return the set of PseudoStates
+	 * @throws InsufficentModelDataError thrown if the input set contains less than two points
+	 */
+	public static Vector<PseudoState> create(Vector<FuzzyPoint> points, int scale) throws InsufficentModelDataError {
 		if(points.size() < 2) throw new InsufficentModelDataError(points.size());
 		
-		return calculate(points);
+		return calculate(points, scale);
 	}
 	
 	/**
@@ -59,18 +70,25 @@ public class CreateModel {
 	 * @return the set of PseudoStates, known as the model
 	 */
 	private static Vector<PseudoState> calculate(Vector<FuzzyPoint> points) {
+		return calculate(points, 1);
+	}
+	
+	/**
+	 * Calculate the model (set of PseudoStates) from a set of FuzzyPoints
+	 * @param points the set of FuzzyPoints
+	 * @param scale The scaling factor
+	 * @return the set of PseudoStates, known as the model
+	 */
+	private static Vector<PseudoState> calculate(Vector<FuzzyPoint> points, int scale) {
 		Vector<PseudoState> states = new Vector<PseudoState>();
 		
 		for(int i = 1; i < points.size(); i++) {
-			PseudoState s = PseudoState.getDifference(points.get(i - 1), points.get(i));
-			
+			PseudoState s = PseudoState.getDifference(points.get(i - 1), points.get(i), scale);
 			states.add(s);
 		}
 		
 		return states;
 	}
-	
-	
 	
 	
 	
