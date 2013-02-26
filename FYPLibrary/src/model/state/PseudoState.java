@@ -75,41 +75,6 @@ public class PseudoState extends FuzzyPoint {
 			z = null;
 		}
 		
-//		try {
-//			FuzzyNumber p1 = point1.getX(), p2 = point2.getX();
-//			double xMin = (p2.getValue() - p2.getError()/2) - (p1.getValue() + p1.getError()/2);
-//			double xMax = (p2.getValue() + p2.getError()/2) - (p1.getValue() - p1.getError()/2);
-//			double diff = (xMax - xMin)/2;
-//			double value = xMin + diff;
-//			
-//			x = new FuzzyNumber(value, diff/value);
-//		} catch (InvalidDimensionException e) {
-//			x = null;
-//		}
-//		
-//		try {
-//			FuzzyNumber p1 = point1.getY(), p2 = point2.getY();
-//			double yMin = (p2.getValue() - p2.getError()/2) - (p1.getValue() + p1.getError()/2);
-//			double yMax = (p2.getValue() + p2.getError()/2) - (p1.getValue() - p1.getError()/2);
-//			double diff = (yMax - yMin)/2;
-//			double value = yMin + diff;
-//			
-//			y = new FuzzyNumber(value, diff/value);
-//		} catch (InvalidDimensionException e) {
-//			y = null;
-//		}
-//		
-//		try {
-//			FuzzyNumber p1 = point1.getZ(), p2 = point2.getZ();
-//			double zMin = (p2.getValue() - p2.getError()/2) - (p1.getValue() + p1.getError()/2);
-//			double zMax = (p2.getValue() + p2.getError()/2) - (p1.getValue() - p1.getError()/2);
-//			double diff = (zMax - zMin)/2;
-//			double value = zMin + diff;
-//			
-//			z = new FuzzyNumber(value, diff/value);
-//		} catch (InvalidDimensionException e) {
-//			z = null;
-//		}
 		
 		return new PseudoState(x, y, z);
 	}
