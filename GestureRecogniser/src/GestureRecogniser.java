@@ -78,7 +78,6 @@ public class GestureRecogniser {
 	}
 	
 	private void addGestures() {
-//		// FAILED
 //		// LeftToRight
 //		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
 //		
@@ -90,15 +89,15 @@ public class GestureRecogniser {
 //		// Upwards
 //		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
 //		
-//		// FAILED
+//		// PASSED
 //		// Stop
 //		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
 //
 //		// PASSED
 //		// Start
 //		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
-//		
-//		// NOPE		
+//				
+//		// FAIL
 //		// Wave
 //		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
 //		
@@ -106,18 +105,24 @@ public class GestureRecogniser {
 //		// 1
 //		fsmm.add(new FiniteStateMachine(new Gesture_1()));
 //		
-//		// NOPE
+//		// PASSED
 //		// 2
 //		fsmm.add(new FiniteStateMachine(new Gesture_2()));
-		
-		// 3
-		fsmm.add(new FiniteStateMachine(new Gesture_3()));
-		
+//		
+//		// PASSED, kinda
 //		// 3
-//		Gesture_3 g = new Gesture_3();
-//		g.ENABLED_AXES = new boolean[]{false,true,false};
-//		fsmm.add(new FiniteStateMachine(g));
-//		System.out.println(Arrays.toString(g.ENABLED_AXES));
+//		fsmm.add(new FiniteStateMachine(new Gesture_3()));
+//		
+//		// PASSED, kinda
+//		// Circle
+//		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
+		
+//		// PASSED
+//		// Downwards
+//		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
+		
+		// Vertical Jump
+		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
 	}
 
 }
