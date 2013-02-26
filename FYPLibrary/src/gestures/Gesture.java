@@ -27,12 +27,6 @@ public interface Gesture {
 	public boolean[] getEnabledAxes();
 	
 	/**
-	 * Get the minimum value of the base
-	 * @return The minimum value
-	 */
-	public int getMinimumBaseValue();
-	
-	/**
 	 * Get the minimum time in milliseconds that needs to be passed before allowing the recognition of the gesture
 	 * @return The value
 	 */
@@ -55,5 +49,11 @@ public interface Gesture {
 	 * @return The allowed additional error [0:1]
 	 */
 	public double getAllowedAdditionalError();
+	
+	/**
+	 * Determine whether the axes are to be matched independently of each other
+	 * @return true if axes are independent, false otherwise
+	 */
+	public boolean areAxesIndependent();
 	
 }
