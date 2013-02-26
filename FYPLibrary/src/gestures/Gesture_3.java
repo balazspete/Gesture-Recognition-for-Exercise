@@ -2,22 +2,21 @@ package gestures;
 
 public class Gesture_3 implements Gesture{
 	
-	public boolean[] ENABLED_AXES = new boolean[]{ false, false, true };
+	public boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
-		{ -1.4705882352941178, -6.119999999999999, 0.9191176470588118, 7.616000000000098, 4.779411764705884, 3.766153846153845 },
-		{ -0.1838235294117645, -48.96000000000006, -9.191176470588232, -1.1968000000000005, 1.102941176470587, 18.133333333333354 },
-		{ 1.102941176470587, 9.973333333333345, -4.779411764705884, -3.766153846153845, 0, 100 },
-		{ 0.7352941176470598, 14.959999999999981, -11.029411764705884, -1.9946666666666664, 0.5514705882352935, 32.640000000000036 }, 
-		{ 1.102941176470587, 9.973333333333345, -2.941176470588232, -7.480000000000008, -3.3088235294117645, -4.835555555555556 }
+			{ -3.2496307237813884, -16.66650909090909, -5.022156573116689, -16.17631764705883, 6.942392909896602, 15.60268936170213 },
+			{ 1.1816838995568686, 45.8329, -6.942392909896611, -15.60268936170211, -0.7385524372230421, -128.33212000000015 },
+			{ 2.806499261447562, 19.298063157894745, -13.589364844903983, -7.472755434782611, -2.0679468242245207, -49.10667857142855 }
+
 	};
 	
-	protected final int minimumBaseValue = 0;
-	protected final int minimumNoReactionTime = 1000;
+	protected final int minimumNoReactionTime = 900;
 	protected final int maximumReactionTime = 5000;
-	protected final boolean checkOrder = true;
+	protected final boolean checkOrder = false;
 	
 	protected final double allowedAdditionalError = 0.5;
+	protected final boolean independentAxes = false;
 	
 	@Override
 	public double[][] getGestureModel() {
@@ -27,11 +26,6 @@ public class Gesture_3 implements Gesture{
 	@Override
 	public boolean[] getEnabledAxes() {
 		return ENABLED_AXES;
-	}
-
-	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
 	}
 
 	@Override
@@ -52,5 +46,10 @@ public class Gesture_3 implements Gesture{
 	@Override
 	public double getAllowedAdditionalError() {
 		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return independentAxes;
 	}
 }

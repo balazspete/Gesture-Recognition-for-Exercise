@@ -2,18 +2,18 @@ package gestures;
 
 public class Gesture_RightToLeft implements Gesture {
 
-	protected final boolean[] ENABLED_AXES = new boolean[]{ true, true, false };
+	protected final boolean[] ENABLED_AXES = new boolean[]{ true, false, true };
 	
 	protected final double[][] GESTURE_MODEL = new double[][] {
-		{ 1.4319809069212397, 	4.190000000000004, 		3.8186157517899773, 	1.3093749999999995, 	0, 	0 },
-		{ 3.5799522673031037, 	2.0949999999999993, 	3.1026252983293574, 	1.9338461538461527, 	0, 	0 },
-		{ 3.8186157517899764, 	2.0949999999999998, 	0.4773269689737418, 	7.807500000000193, 		0, 	0 }
+		{ 12.896825396825397, 5.861907692307692, -15.277777777777771, -9.896727272727276, -21.825396825396822, -6.927709090909091 }
 	};
 	
-	protected final int minimumBaseValue = 0;
-	protected final int minimumNoReactionTime = 0;
+	protected final int minimumNoReactionTime = 2500;
 	protected final int maximumReactionTime = 5000;
 	protected final boolean checkOrder = true;
+	
+	private double allowedAdditionalError = 0.2;
+	private boolean areAxesIndependent = false;
 
 	@Override
 	public boolean getAxisCheckOrder() {
@@ -31,11 +31,6 @@ public class Gesture_RightToLeft implements Gesture {
 	}
 
 	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
-	}
-
-	@Override
 	public int getMinimumNoReactionTime() {
 		return minimumNoReactionTime;
 	}
@@ -47,6 +42,11 @@ public class Gesture_RightToLeft implements Gesture {
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return areAxesIndependent;
 	}
 }

@@ -5,16 +5,17 @@ public class Gesture_Stop implements Gesture {
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
-		{ -0.9685230024213065, 	-3.097500000000003, 	2.1791767554479406,	1.3766666666666674,		-1.6949152542372863, 	-1.7700000000000014 },
-		{ -2.6634382566585946, 	-1.5018181818181822, 	9.68523002421307, 	0.6711250000000004, 	-0.4842615012106508, 	-6.195000000000036 }
-		//{ -2.421307506053269, 	-2.6844999999999994, 	12.348668280871664,	0.8907843137254907, 	-1.6949152542372907, 	-2.654999999999996 }
-		//{ -1.4527845036319604, 	-6.883333333333337, 	3.874092009685242,	3.3556249999999896, 	-1.9370460048426157, 	-3.6137499999999987 }
+		//{ -3.082851637764933, -15.151556249999997, 3.8535645472061617, 14.814855000000016, -1.1560693641618478, -76.31895000000013 },
+		{ -3.2755298651252405, -22.1826705882353, 16.184971098265905, 4.489349999999998, -1.5414258188824679, -60.60622499999994 },
+		{ -0.5780346820809257, -161.61659999999978, 8.863198458574189, 11.711347826086948, -0.7707129094412313, -107.74440000000027 } 
 	};
 
-	protected final int minimumBaseValue = 0;
 	protected final int minimumNoReactionTime = 400;
-	protected final int maximumReactionTime = 10000;
+	protected final int maximumReactionTime = 5000;
 	protected final boolean checkOrder = true;
+	
+	protected final double allowedAdditionalError = 0.4;
+	protected final boolean independentAxes = false;
 
 	@Override
 	public boolean getAxisCheckOrder() {
@@ -32,11 +33,6 @@ public class Gesture_Stop implements Gesture {
 	}
 
 	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
-	}
-
-	@Override
 	public int getMinimumNoReactionTime() {
 		return minimumNoReactionTime;
 	}
@@ -48,6 +44,11 @@ public class Gesture_Stop implements Gesture {
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return independentAxes;
 	}
 }

@@ -2,21 +2,24 @@ package gestures;
 
 public class Gesture_Wave implements Gesture {
 
-	public final boolean[] ENABLED_AXES = new boolean[]{ true, false, false };
+	public final boolean[] ENABLED_AXES = new boolean[]{ true, false, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
-		{ -17.372881355932208, -0.5180487804878048, 0, 0, 36.652542372881356, 0.2864739884393064 },
-		{ 21.82203389830508, 0.8019417475728156, 0, 0, -29.66101694915254, -0.5900000000000001 },
-		{ -21.398305084745758, -0.9346534653465349, 0, 0, 23.093220338983052, 0.6495412844036696 },
-		{ 20.127118644067796, 1.2421052631578948, 0, 0, -20.974576271186443, -0.7151515151515151 },
-		{ -19.915254237288135, -1.129787234042553, 0, 0, 22.66949152542373, 0.7719626168224298 },
-		{ 14.194915254237289, 1.0567164179104478, 0, 0, -26.05932203389831, -0.6715447154471543 }
+			{ -7.692307692307692, -6.929000000000001, 1.3133208255159445, 32.46731428571436, 18.198874296435267, 7.029006185567012 },
+			{ 10.131332082551593, 10.521814814814817, 0.9380863039399543, 73.86314000000066, -14.63414634146341, -10.926500000000004 }//,
+//			{ -9.568480300187616, -11.697782352941177, -0.562851782363964, -123.10523333333629, 12.195121951219509, 11.800620000000002 },
+//			{ 8.067542213883677, 10.570753488372095, 0.37523452157597603, 156.24895000000373, -14.446529080675422, -9.223668831168832 },
+//			{ -8.44277673545966, -12.626177777777782, -0.18761726078800223, -312.4978999999838, 14.258911819887427, 7.4760263157894755 },
+//			{ 5.065666041275794, 26.304537037037058, -0.1876172607879738, -312.49790000003117, -9.943714821763596, -13.400424528301896 }
+
 	};
 	
-	protected final int minimumBaseValue = 0;
-	protected final int minimumNoReactionTime = 0;
-	protected final int maximumReactionTime = 50000;
+	protected final int minimumNoReactionTime = 100;
+	protected final int maximumReactionTime = 1000;
 	protected final boolean checkOrder = true;
+	
+	protected final double allowedAdditionalError = 0.3;
+	protected final boolean independentAxes = false;
 
 	@Override
 	public boolean getAxisCheckOrder() {
@@ -34,11 +37,6 @@ public class Gesture_Wave implements Gesture {
 	}
 
 	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
-	}
-
-	@Override
 	public int getMinimumNoReactionTime() {
 		return minimumNoReactionTime;
 	}
@@ -50,6 +48,11 @@ public class Gesture_Wave implements Gesture {
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return independentAxes;
 	}
 }

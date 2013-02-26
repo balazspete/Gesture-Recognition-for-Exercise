@@ -5,16 +5,18 @@ public class Gesture_Start implements Gesture {
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, false };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
-		{ -1.616161616161616, -6.187500000000001, 21.616161616161605, 0.11565420560747669, 0.1, 100 },
-		{ -8.080808080808083, -2.1656249999999995, -2.8282828282828234, -2.2982142857142898, -1.0101010101010122, -9.899999999999979 },
-		{ -1.0101010101010104, -14.849999999999996, -0.6060606060606091, -14.849999999999927, -2.222222222222218, -4.500000000000009 }
+		{ 2.3529411764705888, 	21.674999999999994, 	8.235294117647058, 		11.147142857142859, 	1.9607843137254903, 	31.211999999999996, 	50 },
+		{ -9.215686274509803, 	-5.534042553191489, 	23.725490196078425, 	3.4393388429752076, 	-1.764705882352942, 	-31.789999999999985 },
+		{ -3.333333333333333, 	-19.89, 				-1.5686274509803866, 	-35.76375000000013, 	-2.1568627450980387, 	-28.37454545454546 }
+
 	};
 	
-
-	protected final int minimumBaseValue = 0;
 	protected final int minimumNoReactionTime = 500;
-	protected final int maximumReactionTime = 10000;
+	protected final int maximumReactionTime = 5000;
 	protected final boolean checkOrder = true;
+	
+	protected final double allowedAdditionalError = 0.3;
+	protected final boolean independentAxes = false;
 
 	@Override
 	public boolean getAxisCheckOrder() {
@@ -32,11 +34,6 @@ public class Gesture_Start implements Gesture {
 	}
 
 	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
-	}
-
-	@Override
 	public int getMinimumNoReactionTime() {
 		return minimumNoReactionTime;
 	}
@@ -48,6 +45,11 @@ public class Gesture_Start implements Gesture {
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return independentAxes;
 	}
 }

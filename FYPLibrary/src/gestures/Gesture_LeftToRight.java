@@ -2,19 +2,20 @@ package gestures;
 
 public class Gesture_LeftToRight implements Gesture {
 
-	public final boolean[] ENABLED_AXES = new boolean[]{ true, true, false };
+	public final boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
-		{ -5.592105263157897, -1.5199999999999994, 0.3289473684210549, 25.839999999999822, /*0.3289473684210513*/0, 30.40000000000012 },
-		{ -5.921052631578945, -1.6888888888888896, -0.8223684210526443, -13.375999999999793, 4.605263157894736, 2.605714285714286 },
-		{ -5.592105263157894, -1.9670588235294122, -1.973684210526315, -6.8400000000000025, 6.743421052631579, 2.8175609756097564 },
-		{ -3.6184210526315805, -2.7636363636363623, -2.796052631578931, -4.64941176470591, 12.171052631578952, 1.8075675675675669 }
+		{ -10.7421875, 	-1.2101818181818182, 	-1.3671875, 	-17.554285714285715, 	0.9765625, 	16.384 ,				20 },
+		{ -9.9609375, 	-1.8070588235294118, 	-6.640625, 		-5.270588235294118, 	13.046875, 	0.8677966101694915, 	40 }
+
 	};
 
-	protected final int minimumBaseValue = 0;
-	protected final int minimumNoReactionTime = 0;
-	protected final int maximumReactionTime = 50000;
+	protected final int minimumNoReactionTime = 2500;
+	protected final int maximumReactionTime = 5000;
 	protected final boolean checkOrder = true;
+	
+	protected double allowedAdditionalError = 0.4;
+	protected boolean areAxesIndependent = false;
 
 	@Override
 	public boolean getAxisCheckOrder() {
@@ -32,11 +33,6 @@ public class Gesture_LeftToRight implements Gesture {
 	}
 
 	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
-	}
-
-	@Override
 	public int getMinimumNoReactionTime() {
 		return minimumNoReactionTime;
 	}
@@ -48,6 +44,11 @@ public class Gesture_LeftToRight implements Gesture {
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return areAxesIndependent;
 	}
 }

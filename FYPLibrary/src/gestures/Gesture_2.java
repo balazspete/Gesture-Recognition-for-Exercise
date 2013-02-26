@@ -2,21 +2,22 @@ package gestures;
 
 public class Gesture_2 implements Gesture{
 	
-	public final boolean[] ENABLED_AXES = new boolean[]{ true, true, false };
+	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
-//		{ -5.322580645161291, -0.9393939393939394, 8.225806451612911, 0.9725490196078422, 9.516129032258064, 0.788135593220339 },
-//		{ 4.193548387096776, 1.4307692307692303, -19.67741935483872, -0.5590163934426227, -1.7741935483870979, -5.636363636363633 }
-		{ 0.2949852507374633, 16.949999999999992, 5.7522123893805315, -1.7384615384615383, 4.572271386430675, 2.18709677419355 },
-		{ 4.71976401179941, 1.3771875, -20.64896755162242, -0.6053571428571428, -10.914454277286133, -0.9162162162162164 },
-		{ -3.6873156342182885, -1.6272000000000002, -3.392330383480825, -2.6530434782608703, 11.061946902654869, 0.9039999999999999 }
+			{ -2.581755593803786, -29.255286666666674, 8.261617900172112, 10.548781250000005, 5.335628227194494, 21.778129032258057, 40 },
+			{ -1.549053356282272, -52.50948888888889, -3.958691910499141, -10.27359565217391, 3.4423407917383813, 32.068295000000006 }//,
+			//{ 5.163511187607574, 18.003253333333333, -16.86746987951807, -4.822300000000001, -2.5817555938037877, -47.258539999999975 }
+
 
 	};
 	
-	protected final int minimumBaseValue = 100;
-	protected final int minimumNoReactionTime = 1000;
-	protected final int maximumReactionTime = 3000;
-	protected final boolean checkOrder = false;
+	protected final int minimumNoReactionTime = 0;
+	protected final int maximumReactionTime = 7000;
+	protected final boolean checkOrder = true;
+	
+	protected final double allowedAdditionalError = 0.3;
+	protected final boolean independentAxes = false;
 	
 	@Override
 	public double[][] getGestureModel() {
@@ -26,11 +27,6 @@ public class Gesture_2 implements Gesture{
 	@Override
 	public boolean[] getEnabledAxes() {
 		return ENABLED_AXES;
-	}
-
-	@Override
-	public int getMinimumBaseValue() {
-		return minimumBaseValue;
 	}
 
 	@Override
@@ -50,6 +46,11 @@ public class Gesture_2 implements Gesture{
 
 	@Override
 	public double getAllowedAdditionalError() {
-		return 0;
+		return allowedAdditionalError;
+	}
+
+	@Override
+	public boolean areAxesIndependent() {
+		return independentAxes;
 	}
 }
