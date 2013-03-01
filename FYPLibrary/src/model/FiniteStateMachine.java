@@ -32,6 +32,8 @@ public class FiniteStateMachine {
 		= new ArrayList<AcceptingStateListener>();
 
 	private List<FuzzyState> states;
+	private List<Coordinate> stateCoordinates;
+			
 	private final int groundState = 0;
 	private int currentState = groundState;
 	
@@ -55,10 +57,13 @@ public class FiniteStateMachine {
 				gesture.getAxisCheckOrder(), 
 				gesture.getAllowedAdditionalError(),
 				gesture.areAxesIndependent());
+		this.stateCoordinates = new ArrayList<Coordinate>(states.size());
+		for(int i = 0; i<states.size(); i++) stateCoordinates.add(i, null);
+		System.out.println(stateCoordinates.size());
+		
 		this.minimumNoReactionTime = gesture.getMinimumNoReactionTime();
 		this.maximumReactionTime = gesture.getMaximumReactionTime();
 		this.gesture = gesture;
-		System.out.println(Arrays.toString(states.toArray()));
 	}
 	
 	/**
@@ -124,6 +129,14 @@ public class FiniteStateMachine {
 	public Gesture getGesture() {
 		return gesture;
 	}
+	
+	/**
+	 * Method to retrieve the state coordinates
+	 * @return The coordinates corresponding to the states of the FSM
+	 */
+	public List<Coordinate> getStateCoordinates() {
+		return stateCoordinates;
+	}
 
 	/**
 	 * Method to be called to notify all listeners
@@ -144,22 +157,27 @@ public class FiniteStateMachine {
 	private synchronized void match(Coordinate coordinate) {
 		long time = System.currentTimeMillis();
 		
-		System.out.println("################ - "+coordinates.size() +" " + coordinates.maxSize());
 		// Don't match if minimum waiting time has not passed yet
 		if(currentState == groundState && time-lastEventTime <= minimumNoReactionTime) return;
 		// Reset FSM if gesture has timed out
 		if(time-lastEventTime > maximumReactionTime) reset(time-minimumNoReactionTime);
-		//if(currentState!=0 && currentState == states.size()) return;
-
-		System.out.println(currentState);
 		
-		if(currentState > groundState) {
-			matchHelper(states.get(currentState), coordinates.getLast(), coordinate);
-		} else {
-			coordinates.store(coordinate);
-			for(int i = coordinates.size() -1; i >= groundState; i--) {
-				if(matchHelper(states.get(currentState), coordinates.get(i), coordinate)) return;
+		// Start the matching process 
+		int state = currentState;
+		while(groundState <= state) {
+			if(state > groundState) {
+				if(matchHelper(state, stateCoordinates.get(state), coordinate)) return;
+			} else {
+				coordinates.store(coordinate);
+				for(int i = coordinates.size() -1; i >= groundState; i--) {
+					if(matchHelper(state, coordinates.get(i), coordinate)) {
+						if (stateCoordinates.get(0) == null) stateCoordinates.set(0, coordinates.get(i));
+						return;
+					}
+				}
 			}
+			
+			state--;
 		}
 	}
 	
@@ -169,13 +187,13 @@ public class FiniteStateMachine {
 	 * @param coordinate The coordinate
 	 * @return The match result
 	 */
-	private boolean matchHelper(FuzzyState state, Coordinate inRepo, Coordinate coordinate) {
+	private boolean matchHelper(int state, Coordinate inRepo, Coordinate coordinate) {
 		DisplacementVector vector = 
 				DisplacementVector.getVector(inRepo, coordinate);
-		boolean result = state.match(vector);
+		boolean result = states.get(state).match(vector);
 		
 		if(result) {
-			goToNextState();
+			goToNextState(state, coordinate);
 		}
 		
 		return result;
@@ -183,13 +201,18 @@ public class FiniteStateMachine {
 	
 	/**
 	 * Go to the next state of the FSM
+	 * @param state The index of the state handled
+	 * @param coordinate The tested coordinate
 	 */
-	private void goToNextState() {
-		currentState++;
-		if(currentState==groundState+1) lastEventTime = System.currentTimeMillis();
-		if(currentState == states.size()) fireEvent();
+	private void goToNextState(int state, Coordinate coordinate) {
+		if(state < states.size()-1) stateCoordinates.set(state+1, coordinate);
 		
-		
-		System.out.println("Increased state: " + currentState + "/" + states.size());
+		if(state == currentState) {
+			currentState++;
+			if(currentState==groundState+1) lastEventTime = System.currentTimeMillis();
+			if(currentState == states.size()) fireEvent();
+			
+//			System.out.println("Increased state: " + currentState + "/" + states.size());
+		}
 	}
 }
