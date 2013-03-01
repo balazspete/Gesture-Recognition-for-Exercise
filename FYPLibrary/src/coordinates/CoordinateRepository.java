@@ -60,14 +60,4 @@ public class CoordinateRepository extends LinkedList<Coordinate> {
 	public int maxSize() {
 		return maximumSize;
 	}
-	
-	public static void main(String[] args) {
-		CoordinateRepository r = new CoordinateRepository();
-		int count = 0;
-		while(count < 30){
-			r.store(new Coordinate(count, count, count));
-			System.out.println(count + " " +r.size());
-			count++;
-		}
-	}
 }
