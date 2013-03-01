@@ -2,6 +2,7 @@ package coordinates;
 
 import java.awt.Color;
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import filters.BufferedFilter;
@@ -30,12 +31,34 @@ public class CoordinateSeries {
 	
 	private boolean highlighted = false;
 	
+	private double[] xStats, yStats, zStats;
+	
 	/**
 	 * Create an instance of CoordinateSeries
-	 * @param series list of Coordinates
+	 * @param series Vector of Coordinates
 	 */
 	public CoordinateSeries(Vector<Coordinate> series) {
 		this.series = series;
+		initialize();
+	}
+	
+	/**
+	 * Create an instance of CoordinateSeries
+	 * @param series Array of Coordinates
+	 */
+	public CoordinateSeries(Coordinate[] series) {
+		this.series = new Vector<Coordinate>();
+		for(Coordinate c : series) this.series.add(c);
+		initialize();
+	}
+	
+	/**
+	 * Create an instance of CoordinateSeries
+	 * @param series List of Coordinates
+	 */
+	public CoordinateSeries(List<Coordinate> series) {
+		this.series = new Vector<Coordinate>();
+		for(Coordinate c : series) this.series.add(c);
 		initialize();
 	}
 	
@@ -70,9 +93,9 @@ public class CoordinateSeries {
 				z = new Vector<Double>();
 		separateCoordinates(x, y, z);
 		
-		double[] xStats = getStats(x), 
-				yStats = getStats(y), 
-				zStats = getStats(z);
+		xStats = getStats(x); 
+		yStats = getStats(y); 
+		zStats = getStats(z);
 		
 		highest = Math.max(xStats[1], Math.max(yStats[1], zStats[1]));
 		lowest = Math.min(xStats[0], Math.min(yStats[0], zStats[0]));
@@ -206,6 +229,30 @@ public class CoordinateSeries {
 		return highlighted;
 	}
 	
+	/**
+	 * Get the stats of the x-axis (min, max, difference)
+	 * @return the statistics of the x-axis (0:min, 1:max, 2:max-difference)
+	 */
+	public double[] getxStats() {
+		return xStats;
+	}
+
+	/**
+	 * Get the stats of the y-axis (min, max, difference)
+	 * @return the statistics of the y-axis (0:min, 1:max, 2:max-difference)
+	 */
+	public double[] getyStats() {
+		return yStats;
+	}
+
+	/**
+	 * Get the stats of the z-axis (min, max, difference)
+	 * @return the statistics of the z-axis (0:min, 1:max, 2:max-difference)
+	 */	
+	public double[] getzStats() {
+		return zStats;
+	}
+
 	/**
 	 * Function to separate the coordinates into three axis-wise lists
 	 * @param x x-list
