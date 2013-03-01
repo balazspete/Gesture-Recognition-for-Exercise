@@ -8,6 +8,7 @@ package coordinates;
 public class Coordinate {
 
 	private double x, y, z;
+	private long time;
 	
 	/**
 	 * Create an instance of the Coordinate class
@@ -19,6 +20,8 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 		this.z= z;
+		
+		this.time = System.currentTimeMillis();
 	}
 
 	/**
@@ -91,6 +94,14 @@ public class Coordinate {
 	 */
 	public String toString(){
 		return "" + x + "  " + y + "  " + z + "";
+	}
+	
+	/**
+	 * Get the UNIX time at which the Coordinate was created
+	 * @return The creation time of the Coordinate (UNIX time-stamp)
+	 */
+	public long getTime() {
+		return time;
 	}
 	
 	/**
