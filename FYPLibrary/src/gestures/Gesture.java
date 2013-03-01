@@ -12,48 +12,48 @@ import model.state.PseudoState;
  * @author Balazs Pete
  *
  */
-public interface Gesture {
+public abstract class Gesture {
 
 	/**
 	 * Get the model describing the gesture
 	 * @return The model
 	 */
-	public double[][] getGestureModel();
+	public abstract double[][] getGestureModel();
 	
 	/**
 	 * Get the list of boolean values determining whether an axis is considered
 	 * @return The boolean array (0: x-axis, 1: y-axis, 2: z-axis)
 	 */
-	public boolean[] getEnabledAxes();
+	public abstract boolean[] getEnabledAxes();
 	
 	/**
 	 * Get the minimum time in milliseconds that needs to be passed before allowing the recognition of the gesture
 	 * @return The value
 	 */
-	public int getMinimumNoReactionTime();
+	public abstract int getMinimumNoReactionTime();
 	
 	/**
 	 * Get the maximum time in milliseconds allowed before the FSM needs to be reset
 	 * @return The value
 	 */
-	public int getMaximumReactionTime();
+	public abstract int getMaximumReactionTime();
 	
 	/**
 	 * Get the order in which the axes should be checked
 	 * @return True if check order is { x, y, z }, false if check order is { z, y, x }
 	 */
-	public boolean getAxisCheckOrder();
+	public abstract boolean getAxisCheckOrder();
 	
 	/**
 	 * Get the allowed additional error of the gesture
 	 * @return The allowed additional error [0:1]
 	 */
-	public double getAllowedAdditionalError();
+	public abstract double getAllowedAdditionalError();
 	
 	/**
 	 * Determine whether the axes are to be matched independently of each other
 	 * @return true if axes are independent, false otherwise
 	 */
-	public boolean areAxesIndependent();
+	public abstract boolean areAxesIndependent();
 	
 }
