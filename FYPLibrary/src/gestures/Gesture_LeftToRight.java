@@ -1,6 +1,6 @@
 package gestures;
 
-public class Gesture_LeftToRight implements Gesture {
+public class Gesture_LeftToRight extends Gesture {
 
 	public final boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	

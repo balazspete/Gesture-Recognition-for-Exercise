@@ -1,6 +1,6 @@
 package gestures;
 
-public class Gesture_Circle implements Gesture {
+public class Gesture_Circle extends Gesture {
 	public boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {

@@ -1,6 +1,6 @@
 package gestures;
 
-public class Gesture_1 implements Gesture {
+public class Gesture_1 extends Gesture {
 
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	

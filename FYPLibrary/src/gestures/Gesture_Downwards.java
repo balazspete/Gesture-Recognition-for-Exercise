@@ -1,8 +1,6 @@
 package gestures;
 
-public class Gesture_Downwards implements Gesture {
-
-//	
+public class Gesture_Downwards extends Gesture {
 
 	public boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	

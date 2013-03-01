@@ -1,11 +1,10 @@
 package gestures;
 
-public class Gesture_Stop implements Gesture {
+public class Gesture_Stop extends Gesture {
 
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
-		//{ -3.082851637764933, -15.151556249999997, 3.8535645472061617, 14.814855000000016, -1.1560693641618478, -76.31895000000013 },
 		{ -3.2755298651252405, -22.1826705882353, 16.184971098265905, 4.489349999999998, -1.5414258188824679, -60.60622499999994 },
 		{ -0.5780346820809257, -161.61659999999978, 8.863198458574189, 11.711347826086948, -0.7707129094412313, -107.74440000000027 } 
 	};
