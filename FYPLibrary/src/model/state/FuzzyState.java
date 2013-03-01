@@ -18,6 +18,8 @@ public class FuzzyState {
 	
 	private int firstIndex = -1;
 	
+	private double[] factors = new double[] { 0, 0, 0 };
+	
 	private double[] lowFactors = new double[] { 1, 1, 1 };
 	private double[] highFactors = new double[] { 1, 1, 1 };
 	
@@ -27,11 +29,10 @@ public class FuzzyState {
 	
 	private double minimumBase = 0; 
 	
-	private double[] factors = new double[] { 0, 0, 0 };
-	
 	private boolean checkDirection = true;
 	
 	private double allowedAdditionalError = 1;
+	
 	private boolean independentAxes = false;
 	
 	/**
@@ -135,7 +136,7 @@ public class FuzzyState {
 	 */
 	private boolean matchHelper_IndependentAxes(DisplacementVector vector) {
 		double[] values = checkDirection ? vector.getAll() : vector.getAllInReverse();
-		System.out.println("--");
+//		System.out.println("--");
 		
 		int index = firstIndex;
 		while(index < values.length) {
@@ -147,13 +148,13 @@ public class FuzzyState {
 			
 			// Return no match, if the direction is opposite
 			double axis = factors[index] * (direction ? 1 : -1);
-			System.out.println((axis > 0) +" - "+ (values[index] > 0));
+//			System.out.println((axis > 0) +" - "+ (values[index] > 0));
 			if(axis > 0 != values[index] > 0) return false;
 
 			// Return no match, if the base does not meet the minimum value
 			if(Math.abs(minimumBase) > Math.abs(axis)) return false;
 			
-			System.out.println(minimumBase +" "+axis );
+//			System.out.println(minimumBase +" "+axis );
 			index++;
 		}
 		
@@ -169,16 +170,16 @@ public class FuzzyState {
 		double[] values = checkDirection ? vector.getAll() : vector.getAllInReverse();
 		double base = values[firstIndex];
 		
-		System.out.println("-\n"+direction + " " + base + " " + minimumBase);
+//		System.out.println("-\n"+direction + " " + base + " " + minimumBase);
 		
 		// Return no match, if the direction is opposite
 		if(base == 0 || (base > 0) != direction) return false;
-		System.out.println(Arrays.toString(values) + " " + Arrays.toString(factors));
+//		System.out.println(Arrays.toString(values) + " " + Arrays.toString(factors));
 
 		// Return no match, if the base does not meet the minimum value
 		if(Math.abs(minimumBase) > Math.abs(base)) return false;
 
-		System.out.println("..-..");
+//		System.out.println("..-..");
 		double baseLow = lowFactors[firstIndex];
 		double baseHigh = highFactors[firstIndex];
 		
@@ -207,7 +208,7 @@ public class FuzzyState {
 			
 			index++;
 		}
-		System.out.println(Arrays.toString(values));
+//		System.out.println(Arrays.toString(values));
 		// If all conditions passed (reached this point), the coordinate is a match
 		return true;
 	}
