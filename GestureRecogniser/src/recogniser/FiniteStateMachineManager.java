@@ -1,7 +1,5 @@
 package recogniser;
 
-import java.awt.EventQueue;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -103,7 +101,7 @@ public class FiniteStateMachineManager {
 	 * @param e The AcceptingStateEvent to be handled
 	 */
 	private void processAcceptingStateEvent(AcceptingStateEvent e) {
-		Gesture g = ((FiniteStateMachine) e.getSource()).getGesture();
+		Gesture g = e.getGesture();
 		reset();
 		
 		System.err.println(g.getClass().getName());
