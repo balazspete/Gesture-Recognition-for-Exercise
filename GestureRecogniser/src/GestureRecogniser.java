@@ -1,6 +1,8 @@
 
 import java.util.Arrays;
 
+import analysis.AnalysisManager;
+
 import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
 import events.listeners.AcceptingStateListener;
@@ -36,6 +38,7 @@ public class GestureRecogniser {
 	private FiniteStateMachineManager fsmm = new FiniteStateMachineManager();
 	private InputManager inputManager;
 	private InputMonitor inputMonitor;
+	private AnalysisManager analysisManager;
 	
 	/**
 	 * Create a new instance of GestureRecogniser
@@ -74,6 +77,13 @@ public class GestureRecogniser {
 			}
 		});
 		
+		analysisManager = new AnalysisManager();
+		fsmm.addAcceptingStateListener(new AcceptingStateListener() {
+			@Override
+			public void handleAcceptingState(AcceptingStateEvent e) {
+				analysisManager.handleAcceptingStateEvent(e);
+			}
+		});
 		
 	}
 	
@@ -97,7 +107,7 @@ public class GestureRecogniser {
 //		// Start
 //		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
 //				
-//		// FAIL
+//		// --
 //		// Wave
 //		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
 //		
@@ -116,13 +126,37 @@ public class GestureRecogniser {
 //		// PASSED, kinda
 //		// Circle
 //		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
-		
+//		
 //		// PASSED
 //		// Downwards
 //		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
-		
-		// Vertical Jump
-		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
+//		
+//		// Vertical Jump
+//		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
+//		
+//		// PASSED
+//		// Squat
+//		fsmm.add(new FiniteStateMachine(new Gesture_Squat()));
+//		
+//		// PASSED
+//		// Lateral Raise
+//		fsmm.add(new FiniteStateMachine(new Gesture_LateralRaise()));
+//		
+//		// PASSED
+//		// Bicep Curl
+//		fsmm.add(new FiniteStateMachine(new Gesture_BicepCurl()));
+//		
+//		// PASSED
+//		// Overhead Press
+//		fsmm.add(new FiniteStateMachine(new Gesture_OverheadPress()));
+//		
+		// PASSED
+		// Punching
+		fsmm.add(new FiniteStateMachine(new Gesture_Punching()));
+//
+//		// PASSED
+//		// Isometric Hold
+//		fsmm.add(new FiniteStateMachine(new Gesture_IsometricHold()));
 	}
 
 }
