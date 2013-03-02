@@ -54,7 +54,13 @@ public class FiniteStateMachineManager {
 			public void run() {
 				Coordinate coordinate = getFirstCoordinate();
 				for(FiniteStateMachine fsm : managees) {
+					try {
 					fsm.input(coordinate);
+					} catch(IndexOutOfBoundsException e) {
+						System.err.println("Out of bounds exception - " + fsm.getGesture().getClass().toString());
+					} catch(NullPointerException e) {
+						System.err.println("Null pointer exception - " + fsm.getGesture().getClass().toString());
+					}
 				}
 			}
 		})).start();
@@ -102,7 +108,7 @@ public class FiniteStateMachineManager {
 	 */
 	private void processAcceptingStateEvent(AcceptingStateEvent e) {
 		Gesture g = e.getGesture();
-		reset();
+//		reset();
 		
 		System.err.println(g.getClass().getName());
 	}
