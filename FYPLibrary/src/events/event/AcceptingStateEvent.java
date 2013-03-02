@@ -24,6 +24,8 @@ public class AcceptingStateEvent extends EventObject {
 	
 	protected Gesture gesture;
 	protected CoordinateSeries stateCoordinates;
+	
+	protected long time = -1;
 
 	/**
 	 * Create a new instance of the AcceptingStateEvent object
@@ -32,7 +34,10 @@ public class AcceptingStateEvent extends EventObject {
 	public AcceptingStateEvent(FiniteStateMachine source) {
 		super(source);
 		gesture = source.getGesture();
-		stateCoordinates = new CoordinateSeries(source.getStateCoordinates());
+		
+		List<Coordinate> coordinates = source.getStateCoordinates();
+		stateCoordinates = new CoordinateSeries(coordinates);
+		time = coordinates.get(coordinates.size()-1).getTime();
 	}
 	
 	/**
@@ -49,5 +54,13 @@ public class AcceptingStateEvent extends EventObject {
 	 */
 	public CoordinateSeries getStateCoordinates() {
 		return stateCoordinates;
+	}
+	
+	/**
+	 * Get the time at which the event was created at
+	 * @return
+	 */
+	public long getTime() {
+		return time;
 	}
 }
