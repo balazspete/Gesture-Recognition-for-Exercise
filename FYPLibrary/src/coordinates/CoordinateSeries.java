@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import analysis.GestureStats;
+
 import filters.BufferedFilter;
 import filters.Filter;
+import gestures.Gesture;
 
 /**
  * Class to represent the 
@@ -15,23 +18,28 @@ import filters.Filter;
  */
 public class CoordinateSeries {
 
-	private Vector<Coordinate> series;
+	protected Vector<Coordinate> series;
 	
-	private Color[] color = null;
+	protected Color[] color = null;
 
-	private double lowest;
-	private double highest;
+	protected double lowest;
+	protected double highest;
 	
-	private double verticalScaling = 1;
+	protected double verticalScaling = 1;
 
-	private double horizontalScaling = 1;
+	protected double horizontalScaling = 1;
 	
-	private double verticalOffset = 0;
-	private double horisontalOffset = 0;
+	protected double verticalOffset = 0;
+	protected double horisontalOffset = 0;
 	
-	private boolean highlighted = false;
+	protected boolean highlighted = false;
 	
-	private double[] xStats, yStats, zStats;
+	protected double[] xStats, yStats, zStats;
+	
+	/**
+	 * Create a blank instance of CoordinateSeries
+	 */
+	public CoordinateSeries(){};
 	
 	/**
 	 * Create an instance of CoordinateSeries
@@ -87,7 +95,7 @@ public class CoordinateSeries {
 	/**
 	 * Initialize the variables of this instance
 	 */
-	private void initialize() {
+	protected void initialize() {
 		Vector<Double> x = new Vector<Double>(), 
 				y = new Vector<Double>(), 
 				z = new Vector<Double>();
@@ -259,7 +267,7 @@ public class CoordinateSeries {
 	 * @param y y-list
 	 * @param z z-list
 	 */
-	private void separateCoordinates(Vector<Double> x, Vector<Double> y, Vector<Double> z) {
+	protected void separateCoordinates(Vector<Double> x, Vector<Double> y, Vector<Double> z) {
 		for(int i = 0; i < series.size(); i++) {
 			Coordinate c = series.elementAt(i);
 			x.add(c.getX());
@@ -273,7 +281,7 @@ public class CoordinateSeries {
 	 * @param points set of points
 	 * @return the statistics of the set (0:min, 1:max, 2:max-difference)
 	 */
-	private double[] getStats(Vector<Double> points) {
+	protected double[] getStats(Vector<Double> points) {
 		double[] stats = new double[3];
 		
 		stats[0] = Collections.min(points);
@@ -281,5 +289,34 @@ public class CoordinateSeries {
 		stats[2] = Math.abs(stats[1] - stats[0]);
 		
 		return stats;
+	}
+	
+	/**
+	 * Convert the CoordinateSeries into a GestureStats object
+	 * @param gesture The associated Gesture with the GestureStats
+	 * @return The converted object
+	 */
+	public GestureStats convert(Gesture gesture) {
+		GestureStats gsts = new GestureStats(gesture);
+		
+		gsts.series = series;
+		gsts.color = color;
+		
+		gsts.lowest = lowest;
+		gsts.highest = highest;
+		
+		gsts.verticalScaling = verticalScaling;
+		gsts.horizontalScaling = horizontalScaling;
+		
+		gsts.verticalOffset = verticalOffset;
+		gsts.horisontalOffset = horisontalOffset;
+		
+		gsts.highlighted = highlighted;
+		
+		gsts.xStats = xStats;
+		gsts.yStats = yStats;
+		gsts.zStats = zStats;
+		
+		return gsts;
 	}
 }
