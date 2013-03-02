@@ -147,6 +147,7 @@ public class FiniteStateMachine {
 	    for(AcceptingStateListener l : listeners) {
 	    	l.handleAcceptingState(event);
 	    }
+	    reset();
 	}
 	
 	/**
