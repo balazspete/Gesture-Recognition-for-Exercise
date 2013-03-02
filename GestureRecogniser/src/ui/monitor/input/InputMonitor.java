@@ -181,7 +181,7 @@ public class InputMonitor extends JFrame {
 		coordinateCounter++;
 		coordinates.add(coordinate);
 		
-		frame.setVisible(true);
+		if(!frame.isVisible()) frame.setVisible(true);
 		
 		CoordinateImage image = new CoordinateImage(coordinates.size(), canvas.getHeight()-1, coordinates, 1);
 		canvas.replaceImage(image);
