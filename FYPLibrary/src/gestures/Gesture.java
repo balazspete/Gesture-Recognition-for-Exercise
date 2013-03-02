@@ -14,6 +14,8 @@ import model.state.PseudoState;
  */
 public abstract class Gesture {
 
+	public static final int AXES = 3;
+	
 	/**
 	 * Get the model describing the gesture
 	 * @return The model
