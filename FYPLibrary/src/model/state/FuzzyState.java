@@ -202,7 +202,7 @@ public class FuzzyState {
 			double value = values[index];// * (index%2==1 ? -1 : 1);
 			
 			// If the value is not within the required bounds, return no match
-			System.out.println(index + " | " + low + " " + value + " " + high);
+//			System.out.println(index + " | " + low + " " + value + " " + high);
 			if(value < low || high < value) return false;
 			
 			
