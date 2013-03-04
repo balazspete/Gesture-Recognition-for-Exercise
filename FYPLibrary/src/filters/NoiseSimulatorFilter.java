@@ -49,8 +49,20 @@ public class NoiseSimulatorFilter implements Filter {
 
 	@Override
 	public Coordinate filter(Coordinate coordinate) {
-		
-		return null;
+		System.out.println("...");
+		return new Coordinate(
+			addNoise(coordinate.getX()),
+			addNoise(coordinate.getY()),
+			addNoise(coordinate.getZ()));
+	}
+	
+	/**
+	 * Add some noise to the input number based on the instance attributes
+	 * @param d The number to add noise to
+	 * @return the input number with some noise (probability of noise being added depends on instance parameters)
+	 */
+	private double addNoise(double d) {
+		return d + (Math.random() < noiseRatio ? (Math.random() * 2 * maxNoiseValue) - maxNoiseValue : 0);
 	}
 
 }
