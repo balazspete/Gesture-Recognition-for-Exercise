@@ -1,6 +1,4 @@
 
-import java.util.Arrays;
-
 import analysis.AnalysisManager;
 
 import events.event.AcceptingStateEvent;
@@ -9,6 +7,7 @@ import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
 import filters.CorrectingBufferedFilter;
 import filters.Filter;
+import filters.NoiseSimulatorFilter;
 import filters.SimpleKalmanFilter;
 import model.FiniteStateMachine;
 import recogniser.FiniteStateMachineManager;
@@ -57,11 +56,16 @@ public class GestureRecogniser {
 		InputInterface input = new FileInput(null);
 		
 		// Change Filter to filter type required
-		Filter filter = new CorrectingBufferedFilter(7);
-		Filter filter1 = new SimpleKalmanFilter(filter);
+		Filter noiseFilter = new NoiseSimulatorFilter(1, 500000);
+		
+		Filter correctingFilter = new CorrectingBufferedFilter(7, noiseFilter);
+		Filter simpleKalmanFilter = new SimpleKalmanFilter(correctingFilter);
+		
+		// filter is passed into system components...
+		Filter filter = simpleKalmanFilter;
 		
 		// Set up the input manager
-		inputManager = new InputManager(input, filter1);
+		inputManager = new InputManager(input, filter);
 		inputManager.addEventListener(new CoordinateListener() {
 			@Override
 			public void handleCoordinate(CoordinateEvent e) {
@@ -77,6 +81,7 @@ public class GestureRecogniser {
 				inputMonitor.handleAcceptingState(e);
 			}
 		});
+		
 		AnalysisDisplay adp = new AnalysisDisplay();
 		adp.setVisible(true);
 		analysisManager = new AnalysisManager(adp);
@@ -86,7 +91,6 @@ public class GestureRecogniser {
 				analysisManager.handleAcceptingStateEvent(e);
 			}
 		});
-		
 	}
 	
 	private void addGestures() {
