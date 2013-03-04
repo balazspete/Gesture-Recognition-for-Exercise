@@ -1,6 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture to describe a Circular motion
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Circle extends Gesture {
+	
+	private final String GESTURE_NAME = "Circle";
+	
 	public boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
@@ -49,5 +57,10 @@ public class Gesture_Circle extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

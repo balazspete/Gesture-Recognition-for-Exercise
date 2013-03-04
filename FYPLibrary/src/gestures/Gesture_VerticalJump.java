@@ -7,6 +7,8 @@ package gestures;
  */
 public class Gesture_VerticalJump extends ExerciseGesture {
 	
+	private final String GESTURE_NAME = "Vertical Jump";
+	
 	public boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.5;
 	protected final boolean independentAxes = false;
@@ -62,5 +64,10 @@ public class Gesture_VerticalJump extends ExerciseGesture {
 	@Override
 	public boolean[] getAnalysisAxes() {
 		return ANALYSIS_AXES;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

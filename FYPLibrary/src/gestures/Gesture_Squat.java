@@ -6,6 +6,9 @@ package gestures;
  *
  */
 public class Gesture_Squat extends ExerciseGesture {
+	
+	private final String GESTURE_NAME = "Squat";
+	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, false };
 	protected final double allowedAdditionalError = 0.3;
 	protected final boolean independentAxes = false;
@@ -59,5 +62,10 @@ public class Gesture_Squat extends ExerciseGesture {
 	@Override
 	public boolean[] getAnalysisAxes() {
 		return ANALYSIS_AXES;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

@@ -1,6 +1,14 @@
 package gestures;
 
+/**
+ * An ExerciseGesture to describe a Chest Press motion by the user
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_ChestPress extends ExerciseGesture {
+	
+	private final String GESTURE_NAME = "Chest Press";
+	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.3;
 	protected final boolean independentAxes = false;
@@ -54,5 +62,10 @@ public class Gesture_ChestPress extends ExerciseGesture {
 	@Override
 	public boolean[] getAnalysisAxes() {
 		return ANALYSIS_AXES;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

@@ -7,6 +7,8 @@ package gestures;
  */
 public class Gesture_IsometricHold extends ExerciseGesture {
 
+	private final String GESTURE_NAME = "Isometric Hold";
+	
 	protected final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.3;
 	protected final boolean independentAxes = false;
@@ -61,5 +63,10 @@ public class Gesture_IsometricHold extends ExerciseGesture {
 	@Override
 	public boolean[] getAnalysisAxes() {
 		return ANALYSIS_AXES;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

@@ -1,6 +1,13 @@
 package gestures;
 
+/**
+ * A Gesture to describe a three drawn by the user
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_3 extends Gesture {
+	
+	private final String GESTURE_NAME = "Three (3)";
 	
 	public boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
@@ -51,5 +58,10 @@ public class Gesture_3 extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

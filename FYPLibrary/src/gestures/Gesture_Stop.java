@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture describing a motion indicating "Stop"
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Stop extends Gesture {
 
+	private final String GESTURE_NAME = "Stop";
+	
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
@@ -49,5 +56,10 @@ public class Gesture_Stop extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

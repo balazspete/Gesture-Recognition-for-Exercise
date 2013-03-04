@@ -58,4 +58,10 @@ public abstract class Gesture {
 	 */
 	public abstract boolean areAxesIndependent();
 	
+	/**
+	 * Get a String representation of the Gesture
+	 * @return The name of the Gesture
+	 */
+	public abstract String toString();
+	
 }

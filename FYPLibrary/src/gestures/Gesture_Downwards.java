@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture to describe a Downwards motion by the user
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Downwards extends Gesture {
 
+	private final String GESTURE_NAME = "Downwards";
+	
 	public boolean[] ENABLED_AXES = new boolean[]{ true, true, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
@@ -51,4 +58,8 @@ public class Gesture_Downwards extends Gesture {
 		return independentAxes;
 	}
 	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
+	}
 }

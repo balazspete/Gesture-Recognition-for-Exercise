@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture describing an upwards motion
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Upwards extends Gesture {
 
+	private final String GESTURE_NAME = "Upwards";
+	
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
@@ -52,5 +59,10 @@ public class Gesture_Upwards extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

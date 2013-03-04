@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture to describe a motion indicating "Start"
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Start extends Gesture {
 
+	private final String GESTURE_NAME = "Start";
+	
 	public static final boolean[] ENABLED_AXES = new boolean[]{ false, true, false };
 	
 	public static final double[][] GESTURE_MODEL = new double[][] {
@@ -51,5 +58,10 @@ public class Gesture_Start extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

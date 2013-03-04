@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A Gesture to describe a Right-to-Left motion by the user
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_RightToLeft extends Gesture {
 
+	protected final String GESTURE_NAME = "Right-To-Left";
+	
 	protected final boolean[] ENABLED_AXES = new boolean[]{ true, false, true };
 	
 	protected final double[][] GESTURE_MODEL = new double[][] {
@@ -48,5 +55,10 @@ public class Gesture_RightToLeft extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return areAxesIndependent;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

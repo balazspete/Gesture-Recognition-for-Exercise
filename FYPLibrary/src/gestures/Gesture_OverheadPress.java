@@ -1,6 +1,13 @@
 package gestures;
 
+/**
+ * An ExerciseGesture to describe an Overhead Press
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_OverheadPress extends ExerciseGesture {
+	
+	private final String GESTURE_NAME = "Overhead Press";
 	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.3;
@@ -56,5 +63,10 @@ public class Gesture_OverheadPress extends ExerciseGesture {
 	@Override
 	public boolean[] getAnalysisAxes() {
 		return ANALYSIS_AXES;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

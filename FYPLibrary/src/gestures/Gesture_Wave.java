@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * A gesture to describe a waving like motion
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_Wave extends Gesture {
 
+	private final String GESTURE_NAME = "Wave";
+	
 	public final boolean[] ENABLED_AXES = new boolean[]{ true, false, true };
 	
 	public final double[][] GESTURE_MODEL = new double[][] {
@@ -11,7 +18,6 @@ public class Gesture_Wave extends Gesture {
 			{ 8.067542213883677, 10.570753488372095, 0.37523452157597603, 156.24895000000373, -14.446529080675422, -9.223668831168832 },
 			{ -8.44277673545966, -12.626177777777782, -0.18761726078800223, -312.4978999999838, 14.258911819887427, 7.4760263157894755 },
 			{ 5.065666041275794, 26.304537037037058, -0.1876172607879738, -312.49790000003117, -9.943714821763596, -13.400424528301896 }
-
 	};
 	
 	protected final int minimumNoReactionTime = 100;
@@ -54,5 +60,10 @@ public class Gesture_Wave extends Gesture {
 	@Override
 	public boolean areAxesIndependent() {
 		return independentAxes;
+	}
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
 	}
 }

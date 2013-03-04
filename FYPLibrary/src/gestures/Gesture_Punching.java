@@ -7,6 +7,8 @@ package gestures;
  */
 public class Gesture_Punching extends ExerciseGesture {
 	
+	private final String GESTURE_NAME = "Punching";
+	
 	public final boolean[] ENABLED_AXES = new boolean[]{ true, false, true };
 	protected final double allowedAdditionalError = 0.3;
 	protected final boolean independentAxes = false;
@@ -64,5 +66,9 @@ public class Gesture_Punching extends ExerciseGesture {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
+	}
 }

@@ -1,7 +1,14 @@
 package gestures;
 
+/**
+ * An ExerciseGesture to describe a Bicep Curl motion
+ * @author Balazs Pete
+ *
+ */
 public class Gesture_BicepCurl extends ExerciseGesture {
 
+	private final String GESTURE_NAME = "Bicep Curl";
+	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, false };
 	protected final double allowedAdditionalError = 0.3;
 	protected final boolean independentAxes = false;
@@ -59,7 +66,8 @@ public class Gesture_BicepCurl extends ExerciseGesture {
 		return ANALYSIS_AXES;
 	}
 	
-	
-	
-
+	@Override
+	public String toString() {
+		return GESTURE_NAME;
+	}
 }
