@@ -1,4 +1,6 @@
 
+import output.BufferedFileOutput;
+import output.OutputManager;
 import analysis.AnalysisManager;
 
 import events.event.AcceptingStateEvent;
@@ -38,12 +40,13 @@ public class GestureRecogniser {
 	private FiniteStateMachineManager fsmm = new FiniteStateMachineManager();
 	private InputManager inputManager;
 	private InputMonitor inputMonitor;
+	private OutputManager outputManager;
 	private AnalysisManager analysisManager;
 	
 	/**
 	 * Create a new instance of GestureRecogniser
 	 */
-	public GestureRecogniser() { }
+	public GestureRecogniser() {}
 	
 	/**
 	 * Start the execution of the instance
@@ -82,6 +85,17 @@ public class GestureRecogniser {
 			}
 		});
 		
+		// Set up the output
+		BufferedFileOutput outputInterface = new BufferedFileOutput("output");
+		outputManager = new OutputManager(outputInterface);
+		fsmm.addAcceptingStateListener(new AcceptingStateListener() {
+			@Override
+			public void handleAcceptingState(AcceptingStateEvent e) {
+				outputManager.handleAcceptingStateEvent(e);
+			}
+		});
+		
+		// Set up the Analysis Display, the interface where the ExerciseGesture statistics are seen
 		AnalysisDisplay adp = new AnalysisDisplay();
 		adp.setVisible(true);
 		analysisManager = new AnalysisManager(adp);
@@ -94,40 +108,40 @@ public class GestureRecogniser {
 	}
 	
 	private void addGestures() {
-		// LeftToRight
-		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
+//		// LeftToRight
+//		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
 		
-//		// RightToLeft
-//		fsmm.add(new FiniteStateMachine(new Gesture_RightToLeft()));
+		// RightToLeft
+		fsmm.add(new FiniteStateMachine(new Gesture_RightToLeft()));
 		
-		// Upwards
-		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
-		
-		// Stop
-		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
-
-		// Start
-		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
-				
-//		// FAIL
-//		// Wave
-//		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
-		
-		// 1
-		fsmm.add(new FiniteStateMachine(new Gesture_1()));
-		
-		// 2
-		fsmm.add(new FiniteStateMachine(new Gesture_2()));
-		
-		// 3
-		fsmm.add(new FiniteStateMachine(new Gesture_3()));
-		
-		// Circle
-		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
-		
-		// Downwards
-		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
-		
+//		// Upwards
+//		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
+//		
+//		// Stop
+//		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
+//
+//		// Start
+//		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
+//				
+////		// FAIL
+////		// Wave
+////		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
+//		
+//		// 1
+//		fsmm.add(new FiniteStateMachine(new Gesture_1()));
+//		
+//		// 2
+//		fsmm.add(new FiniteStateMachine(new Gesture_2()));
+//		
+//		// 3
+//		fsmm.add(new FiniteStateMachine(new Gesture_3()));
+//		
+//		// Circle
+//		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
+//		
+//		// Downwards
+//		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
+//		
 //		// Vertical Jump
 //		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
 //		
