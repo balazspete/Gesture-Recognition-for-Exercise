@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
 import coordinates.CoordinateImage;
+import gestures.*;
 
 /**
  * A class to draw a CoordinateImage
@@ -25,7 +28,7 @@ public class InputCanvas extends JPanel {
 	private static final long serialVersionUID = -6076708949184456501L;
 	
 	private CoordinateImage image;
-	private Vector<Integer> acceptingStatePoints = new Vector<Integer>();
+	private Map<Integer, Gesture> acceptingStatePoints = new HashMap<Integer, Gesture>();
 
 	/**
 	 * Initialize an InputCanvas
@@ -57,9 +60,10 @@ public class InputCanvas extends JPanel {
 	/**
 	 * Add a location at which an AcceptingStateEvent occurred
 	 * @param l The AcceptingStateEvent location
+	 * @param gesture The gesture
 	 */
-	public void addAcceptingStatePoint(int l) {
-		acceptingStatePoints.add(l);
+	public void addAcceptingStatePoint(int l, Gesture gesture) {
+		acceptingStatePoints.put(l, gesture);
 	}
 	
 	/**
@@ -71,9 +75,12 @@ public class InputCanvas extends JPanel {
         
         g2.drawImage(image, null, 0, 0);
 
-    	g2.setColor(Color.red);
     	g2.setStroke(new BasicStroke(1));
-        for(int i : acceptingStatePoints) {
+        for(Integer i : acceptingStatePoints.keySet()) {
+        	g2.setColor(Color.red);
+        	if(acceptingStatePoints.get(i) instanceof Gesture_RightToLeft){
+        		g2.setColor(Color.blue);
+        	}
         	g2.draw(new Line2D.Double(i, 0, i, image.getHeight()));
         }
 	}

@@ -156,7 +156,7 @@ public class InputMonitor extends JFrame {
 	 * @param e The AcceptingStateEvent to handle
 	 */
 	public void handleAcceptingState(AcceptingStateEvent e) {
-		canvas.addAcceptingStatePoint(coordinates.size());
+		canvas.addAcceptingStatePoint(coordinates.size(), e.getGesture());
 		frame.paintComponents(frame.getGraphics());
 	}
 	
