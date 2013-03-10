@@ -59,7 +59,7 @@ public class FiniteStateMachine {
 				gesture.areAxesIndependent());
 		this.stateCoordinates = new ArrayList<Coordinate>(states.size());
 		for(int i = 0; i<states.size(); i++) stateCoordinates.add(i, null);
-		System.out.println(stateCoordinates.size());
+//		System.out.println(stateCoordinates.size());
 		
 		this.minimumNoReactionTime = gesture.getMinimumNoReactionTime();
 		this.maximumReactionTime = gesture.getMaximumReactionTime();
