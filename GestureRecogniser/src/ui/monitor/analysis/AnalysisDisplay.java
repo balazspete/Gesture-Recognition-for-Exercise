@@ -1,5 +1,9 @@
 package ui.monitor.analysis;
 
+import graphing.GraphData;
+import graphing.GraphingCanvas;
+import graphing.GraphingImage;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -14,6 +18,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import coordinates.CoordinateSeries;
+
 
 import analysis.GestureStats;
 
@@ -42,13 +49,16 @@ public class AnalysisDisplay extends JFrame {
 	private Map<JLabel, GestureStats> gestureStats = new HashMap<JLabel, GestureStats>();
 	private JPanel gestureStatsPanel;
 	private JSplitPane splitPane;
+	private GraphData graphData;
+	private GraphingImage image;
+	private GraphingCanvas panel_1;
 
 	/**
 	 * Create the frame.
 	 */
 	public AnalysisDisplay() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 315);
+		setBounds(100, 100, 501, 315);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -65,8 +75,10 @@ public class AnalysisDisplay extends JFrame {
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		panel.add(splitPane_1);
 		
-		JPanel panel_2 = new JPanel();
-		splitPane_1.setLeftComponent(panel_2);
+		graphData = new GraphData();
+		image = new GraphingImage(230, 140, graphData, 1);
+		panel_1 = new GraphingCanvas(image);
+		splitPane_1.setLeftComponent(panel_1);
 		
 		JPanel panel_3 = new JPanel();
 		splitPane_1.setRightComponent(panel_3);
@@ -279,6 +291,8 @@ public class AnalysisDisplay extends JFrame {
 	
 	private void updateGestureDisplayPanel(JLabel label) {
 		GestureStats gsts = gestureStats.get(label);
+		graphData.add(""+gsts.getTime(), new CoordinateSeries(gsts.getCoordinates()));
+		panel_1.reloadImage();
 		
 		lblGestureTimeData.setText("" + gsts.getTime());
 		
