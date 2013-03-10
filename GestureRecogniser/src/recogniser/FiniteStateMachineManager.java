@@ -55,7 +55,7 @@ public class FiniteStateMachineManager {
 				Coordinate coordinate = getFirstCoordinate();
 				for(FiniteStateMachine fsm : managees) {
 					try {
-					fsm.input(coordinate);
+						fsm.input(coordinate);
 					} catch(IndexOutOfBoundsException e) {
 						System.err.println("Out of bounds exception - " + fsm.getGesture().getClass().toString());
 					} catch(NullPointerException e) {

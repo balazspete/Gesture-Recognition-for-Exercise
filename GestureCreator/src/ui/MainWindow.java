@@ -16,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.Box;
 
 import coordinates.CoordinateSeries;
-import coordinates.GraphData;
-import coordinates.GraphingImage;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -38,6 +36,9 @@ import exceptions.InsufficentModelDataError;
 import exceptions.InvalidDimensionException;
 import filters.CorrectingBufferedFilter;
 import filters.Filter;
+import graphing.GraphData;
+import graphing.GraphingCanvas;
+import graphing.GraphingImage;
 
 import tools.CreateModel;
 import tools.InputParser;

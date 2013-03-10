@@ -1,5 +1,7 @@
 package ui;
 
+import graphing.GraphingCanvas;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +12,7 @@ import javax.swing.JSpinner;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+
 
 import model.state.FuzzyNumber;
 import model.state.FuzzyPoint;

@@ -40,6 +40,9 @@ public class CorrectingBufferedFilter extends BasicBufferedFilter {
 	
 	/**
 	 * Correct the current last (used) coordinate in the buffer (second last element in real)
+	 * 
+	 * If the middle coordinate lies outside of the two bounding coordinates (start and end) 
+	 * then set the middle coordinate value to be the average of the start and end values
 	 */
 	private void correctCurrentLastCoordinate() {
 		int index = buffer.size()-1;
