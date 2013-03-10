@@ -1,4 +1,4 @@
-package coordinates;
+package graphing;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -7,6 +7,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
+
+import coordinates.Coordinate;
+import coordinates.CoordinateSeries;
 
 /**
  * Class to display the data stored in a GraphData instance

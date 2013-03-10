@@ -1,9 +1,11 @@
-package coordinates;
+package graphing;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
+
+import coordinates.CoordinateSeries;
 
 /**
  * Class to represent the data of a GraphingCanvas

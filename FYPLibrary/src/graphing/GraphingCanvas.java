@@ -1,4 +1,4 @@
-package ui;
+package graphing;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import model.state.FuzzyPoint;
 import model.state.StateImage;
 
-import coordinates.GraphingImage;
 
 @SuppressWarnings("serial")
 /**
