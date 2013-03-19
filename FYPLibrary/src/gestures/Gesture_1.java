@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_1 extends Gesture {
 	
-	private final String GESTURE_NAME = "One (1)";
+	private final String GESTURE_NAME = "One";
 
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	

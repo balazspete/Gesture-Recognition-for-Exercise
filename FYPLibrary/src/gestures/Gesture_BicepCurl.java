@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_BicepCurl extends ExerciseGesture {
 
-	private final String GESTURE_NAME = "Bicep Curl";
+	private final String GESTURE_NAME = "BicepCurl";
 	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, false };
 	protected final double allowedAdditionalError = 0.3;

@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_LeftToRight extends Gesture {
 
-	private final String GESTURE_NAME = "Left-To_right";
+	private final String GESTURE_NAME = "Left-To-Right";
 	
 	public final boolean[] ENABLED_AXES = new boolean[]{ true, false, false };
 	

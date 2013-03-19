@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_ChestPress extends ExerciseGesture {
 	
-	private final String GESTURE_NAME = "Chest Press";
+	private final String GESTURE_NAME = "ChestPress";
 	
 	public final boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.3;

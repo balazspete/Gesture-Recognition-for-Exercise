@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_LateralRaise extends ExerciseGesture {
 	
-	private final String GESTURE_NAME = "Lateral Raise";
+	private final String GESTURE_NAME = "LateralRaise";
 	
 	public final boolean[] ENABLED_AXES = new boolean[]{ true, true, false };
 	protected final double allowedAdditionalError = 0.3;

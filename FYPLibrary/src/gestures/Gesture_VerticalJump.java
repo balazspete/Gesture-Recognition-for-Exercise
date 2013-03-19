@@ -7,7 +7,7 @@ package gestures;
  */
 public class Gesture_VerticalJump extends ExerciseGesture {
 	
-	private final String GESTURE_NAME = "Vertical Jump";
+	private final String GESTURE_NAME = "VerticalJump";
 	
 	public boolean[] ENABLED_AXES = new boolean[]{ false, true, true };
 	protected final double allowedAdditionalError = 0.5;
