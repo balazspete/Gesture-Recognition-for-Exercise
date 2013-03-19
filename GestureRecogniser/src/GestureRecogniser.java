@@ -5,8 +5,10 @@ import analysis.AnalysisManager;
 
 import events.event.AcceptingStateEvent;
 import events.event.CoordinateEvent;
+import events.event.LimitToGestureEvent;
 import events.listeners.AcceptingStateListener;
 import events.listeners.CoordinateListener;
+import events.listeners.LimitTogestureListener;
 import filters.CorrectingBufferedFilter;
 import filters.Filter;
 import filters.NoiseSimulatorFilter;
@@ -17,6 +19,8 @@ import ui.monitor.analysis.AnalysisDisplay;
 import ui.monitor.input.InputMonitor;
 import gestures.*;
 import input.FileInput;
+import input.GestureSimulator;
+import input.GestureSimulator2;
 import input.InputInterface;
 import input.InputManager;
 
@@ -56,12 +60,14 @@ public class GestureRecogniser {
 		addGestures();
 		
 		// Change InputInterface depending on input requirements
-		InputInterface input = new FileInput(null);
+		GestureSimulator2 gs = new GestureSimulator2();//
+		InputInterface input = gs;
+//		InputInterface input = new FileInput(null);
 		
 		// Change Filter to filter type required
-		Filter noiseFilter = new NoiseSimulatorFilter(1, 500000);
+		//Filter noiseFilter = new NoiseSimulatorFilter(1, 500000);
 		
-		Filter correctingFilter = new CorrectingBufferedFilter(7, noiseFilter);
+		Filter correctingFilter = new CorrectingBufferedFilter(7);
 		Filter simpleKalmanFilter = new SimpleKalmanFilter(correctingFilter);
 		
 		// filter is passed into system components...
@@ -84,6 +90,15 @@ public class GestureRecogniser {
 				inputMonitor.handleAcceptingState(e);
 			}
 		});
+		gs.addListener(new LimitTogestureListener(){
+			@Override
+			public void handle(LimitToGestureEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println("here");
+				inputMonitor.setCurrentGesture(e.getGesture());
+			}
+		});
+		
 		
 		// Set up the output
 		BufferedFileOutput outputInterface = new BufferedFileOutput("output");
@@ -108,69 +123,69 @@ public class GestureRecogniser {
 	}
 	
 	private void addGestures() {
-//		// LeftToRight
-//		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
+		// LeftToRight
+		fsmm.add(new FiniteStateMachine(new Gesture_LeftToRight()));
 		
 		// RightToLeft
 		fsmm.add(new FiniteStateMachine(new Gesture_RightToLeft()));
 		
-//		// Upwards
-//		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
-//		
-//		// Stop
-//		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
-//
-//		// Start
-//		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
-//				
-////		// FAIL
-////		// Wave
-////		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
-//		
-//		// 1
-//		fsmm.add(new FiniteStateMachine(new Gesture_1()));
-//		
-//		// 2
-//		fsmm.add(new FiniteStateMachine(new Gesture_2()));
-//		
-//		// 3
-//		fsmm.add(new FiniteStateMachine(new Gesture_3()));
-//		
-//		// Circle
-//		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
-//		
-//		// Downwards
-//		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
-//		
-//		// Vertical Jump
-//		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
-//		
-//		// Squat
-//		fsmm.add(new FiniteStateMachine(new Gesture_Squat()));
-//		
-//		// Lateral Raise
-//		fsmm.add(new FiniteStateMachine(new Gesture_LateralRaise()));
-//		
-//		// Bicep Curl
-//		fsmm.add(new FiniteStateMachine(new Gesture_BicepCurl()));
-//		
-//		// Overhead Press
-//		fsmm.add(new FiniteStateMachine(new Gesture_OverheadPress()));
-//		
-//		// Punching
-//		fsmm.add(new FiniteStateMachine(new Gesture_Punching()));
-//
-//		// Isometric Hold
-//		fsmm.add(new FiniteStateMachine(new Gesture_IsometricHold()));
-//		
-//		// Bench Press
-//		fsmm.add(new FiniteStateMachine(new Gesture_BenchPress()));
-//		
-//		// Deadlift
-//		fsmm.add(new FiniteStateMachine(new Gesture_Deadlift()));
-//		
-//		// Chest Press
-//		fsmm.add(new FiniteStateMachine(new Gesture_ChestPress()));
+		// Upwards
+		fsmm.add(new FiniteStateMachine(new Gesture_Upwards()));
+		
+		// Stop
+		fsmm.add(new FiniteStateMachine(new Gesture_Stop()));
+
+		// Start
+		fsmm.add(new FiniteStateMachine(new Gesture_Start()));
+				
+//		// FAIL
+//		// Wave
+//		fsmm.add(new FiniteStateMachine(new Gesture_Wave()));
+		
+		// 1
+		fsmm.add(new FiniteStateMachine(new Gesture_1()));
+		
+		// 2
+		fsmm.add(new FiniteStateMachine(new Gesture_2()));
+		
+		// 3
+		fsmm.add(new FiniteStateMachine(new Gesture_3()));
+		
+		// Circle
+		fsmm.add(new FiniteStateMachine(new Gesture_Circle()));
+		
+		// Downwards
+		fsmm.add(new FiniteStateMachine(new Gesture_Downwards()));
+		
+		// Vertical Jump
+		fsmm.add(new FiniteStateMachine(new Gesture_VerticalJump()));
+		
+		// Squat
+		fsmm.add(new FiniteStateMachine(new Gesture_Squat()));
+		
+		// Lateral Raise
+		fsmm.add(new FiniteStateMachine(new Gesture_LateralRaise()));
+		
+		// Bicep Curl
+		fsmm.add(new FiniteStateMachine(new Gesture_BicepCurl()));
+		
+		// Overhead Press
+		fsmm.add(new FiniteStateMachine(new Gesture_OverheadPress()));
+		
+		// Punching
+		fsmm.add(new FiniteStateMachine(new Gesture_Punching()));
+
+		// Isometric Hold
+		fsmm.add(new FiniteStateMachine(new Gesture_IsometricHold()));
+		
+		// Bench Press
+		fsmm.add(new FiniteStateMachine(new Gesture_BenchPress()));
+		
+		// Deadlift
+		fsmm.add(new FiniteStateMachine(new Gesture_Deadlift()));
+		
+		// Chest Press
+		fsmm.add(new FiniteStateMachine(new Gesture_ChestPress()));
 	}
 
 }

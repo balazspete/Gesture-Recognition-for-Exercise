@@ -204,4 +204,8 @@ public class InputMonitor extends JFrame {
 		scrollPane_1.getHorizontalScrollBar()
 			.setValue(scrollPane.getHorizontalScrollBar().getValue());
 	}
+	
+	public void setCurrentGesture(String gesture) {
+		canvas.setMonitoredGesture(gesture);
+	}
 }

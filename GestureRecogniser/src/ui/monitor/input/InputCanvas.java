@@ -29,6 +29,8 @@ public class InputCanvas extends JPanel {
 	
 	private CoordinateImage image;
 	private Map<Integer, Gesture> acceptingStatePoints = new HashMap<Integer, Gesture>();
+	
+	private String monitoredGestureName = null;
 
 	/**
 	 * Initialize an InputCanvas
@@ -78,10 +80,37 @@ public class InputCanvas extends JPanel {
     	g2.setStroke(new BasicStroke(1));
         for(Integer i : acceptingStatePoints.keySet()) {
         	g2.setColor(Color.red);
-        	if(acceptingStatePoints.get(i) instanceof Gesture_RightToLeft){
+        	if(monitoredGestureName != null && acceptingStatePoints.get(i).toString().equals(monitoredGestureName)){
         		g2.setColor(Color.blue);
+        		g2.draw(new Line2D.Double(i, 0, i, image.getHeight()));
         	}
-        	g2.draw(new Line2D.Double(i, 0, i, image.getHeight()));
+        	if(!uniqueGesture) g2.draw(new Line2D.Double(i, 0, i, image.getHeight()));
         }
+	}
+	
+	
+	private boolean uniqueGesture = false;
+	
+	/**
+	 * Set the gesture which is the focus of the monitoring
+	 * @param gestureName The gesture to be marked with a blue line when encountered
+	 */
+	public void setMonitoredGesture(String gestureName) {
+		if(gestureName.equals("__unique-gesture")){
+			uniqueGesture = true;
+			return;
+		}
+		if(gestureName.equals("__no-unique-gesture")){
+			uniqueGesture = false;
+			return;
+		}
+		monitoredGestureName = gestureName;
+	}
+	
+	/**
+	 * Remove the monitored gesture
+	 */
+	public void removeMonitoredGesture() {
+		monitoredGestureName = null;
 	}
 }
