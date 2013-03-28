@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
@@ -17,9 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.Box;
 
 import coordinates.CoordinateSeries;
-import coordinates.GraphData;
-import coordinates.GraphingImage;
-import coordinates.InputParser;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -27,12 +23,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.sql.Savepoint;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JSpinner;
@@ -40,15 +32,26 @@ import javax.swing.SpringLayout;
 import java.awt.Font;
 import javax.swing.JCheckBox;
 
-import model.state.CreateModel;
+import exceptions.InsufficentModelDataError;
+import exceptions.InvalidDimensionException;
+import filters.CorrectingBufferedFilter;
+import filters.Filter;
+import graphing.GraphData;
+import graphing.GraphingCanvas;
+import graphing.GraphingImage;
+
+import tools.CreateModel;
+import tools.InputParser;
+
 import model.state.FuzzyPoint;
-import model.state.InsufficentModelDataError;
-import model.state.InvalidDimensionException;
 
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
+/**
+ * Main class for the gestureCreator project
+ * @author Balazs Pete
+ *
+ */
 public class MainWindow {
 
 	private JFrame frame;
@@ -407,6 +410,9 @@ public class MainWindow {
 		statesPanel.add(btnSave);
 	}
 	
+	/**
+	 * Load fires containing recorded gestures
+	 */
 	private void loadFiles() {
 		if(graphData.getKeys().size() == 0) canvas.replaceImage(new GraphingImage(canvas.getWidth(), canvas.getHeight(), graphData, 1));
 		
@@ -416,6 +422,7 @@ public class MainWindow {
 		
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			File[] files = jfc.getSelectedFiles();
+			Filter filter = new CorrectingBufferedFilter(9);
 			
 			for(File file : files) {
 				String path = file.getPath();
@@ -429,6 +436,10 @@ public class MainWindow {
 		}
 	}
 	
+	/**
+	 * Edit the display parameters of a gesture file
+	 * @param filePath path to the file
+	 */
 	private void editFile(String filePath) {
 		graphData.removeSeriesHighlight();
 		
@@ -446,6 +457,10 @@ public class MainWindow {
 		spinnerVerticalDisplacement.setValue(series.getVerticalOffset());
 	}
 	
+	/**
+	 * Update the settings of a CoordinateSeries based on values on the screen
+	 * @param seriesFilePath path of the gesture file
+	 */
 	private void updateSeriesSettings(String seriesFilePath) {
 		CoordinateSeries series = graphData.get(seriesFilePath);
 		
@@ -462,6 +477,11 @@ public class MainWindow {
 		reloadImage();
 	}
 	
+	/**
+	 * Create an entry of the file on the screen
+	 * @param file file
+	 * @return the created entry
+	 */
 	private Box createFileBox(File file) {
 		Box box = Box.createHorizontalBox();
 		JLabel l0 = new JLabel("Edit  ");
@@ -499,16 +519,25 @@ public class MainWindow {
 		return box;
 	}
 	
+	/**
+	 * Reload the generated images
+	 */
 	private void reloadImage() {
 		canvas.reloadImage();
 		canvas.paintComponent(canvas.getGraphics());
 	}
 	
+	/**
+	 * Add a new state to the list of PsuedoStates
+	 */
 	private void addNewState() {
 		stateCreator = new StateCreator(canvas, statePoints);
 		stateCreator.setVisible(true);
 	}
 	
+	/**
+	 * List all PsuedoStates
+	 */
 	private void listStates() {
 		stateList.removeAll();
 		for(FuzzyPoint point : statePoints) {
@@ -535,6 +564,9 @@ public class MainWindow {
 		}
 	}
 	
+	/**
+	 * Create and save the model
+	 */
 	private void createAndSaveModel() {
 		statePoints.capacity();
 		JFileChooser jfc = new JFileChooser();
@@ -543,7 +575,7 @@ public class MainWindow {
 		
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			try{
-				CreateModel.save(jfc.getSelectedFile(), CreateModel.create(statePoints));
+				CreateModel.save(jfc.getSelectedFile(), CreateModel.create(statePoints, canvas.getHeight()));
 				
 			} catch (InsufficentModelDataError e) {
 				System.err.println("Not enough states to generate a model...");
