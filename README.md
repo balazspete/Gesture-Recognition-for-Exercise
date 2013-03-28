@@ -1,4 +1,4 @@
-FourthYearProject
+Gesture recognition for Exercise
 =================
 
 Balázs Pete's final year project in part fulfilment of the degree of BSc Hons. Computer Science at University College Dublin.
