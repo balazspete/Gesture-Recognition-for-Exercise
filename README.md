@@ -1,7 +1,7 @@
 FourthYearProject
 =================
 
-Balázs Pete's final year project part fulfilment of the degree of BSc Hons. Computer Science at University College Dublin.
+Balázs Pete's final year project in part fulfilment of the degree of BSc Hons. Computer Science at University College Dublin.
 
 
 Code licensed under the MIT License, see LICENSE.txt for more information.
