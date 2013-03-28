@@ -1,7 +1,6 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import graphing.GraphingCanvas;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,9 +10,9 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.JToggleButton;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+
 
 import model.state.FuzzyNumber;
 import model.state.FuzzyPoint;
@@ -25,16 +24,21 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.Window.Type;
 
+/**
+ * INterface to create a PseudoState
+ * @author Balazs Pete
+ *
+ */
 public class StateCreator extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7581751783965412612L;
+	
 	private JPanel contentPane;
 	private GraphingCanvas canvas = null;
 	
@@ -64,19 +68,36 @@ public class StateCreator extends JFrame {
 		initialize(0);
 	}
 	
+	/**
+	 * Create the frame with specified parameters
+	 * @param canvas the instance of GraphingCanvas used by MainWindow
+	 * @param points the set of points stored in MainWindow
+	 */
 	public StateCreator(GraphingCanvas canvas, Vector<FuzzyPoint> points) {
 		initialize(0);
 		this.canvas = canvas;
 		this.points = points;
+		spinnerIndex.setValue(points.size());
 	}
 	
+	/**
+	 * Create the frame with specified parameters
+	 * @param canvas the instance of GraphingCanvas used by MainWindow
+	 * @param points the set of points stored in MainWindow
+	 * @param horizontalPosition the horizontal position of the state (display purposes only, not saved in the model)
+	 */
 	public StateCreator(GraphingCanvas canvas, Vector<FuzzyPoint> points, double horizontalPosition) {
 		initialize(horizontalPosition);
 		this.canvas = canvas;
 		this.points = points;
 		updateImage();
+		spinnerIndex.setValue(points.size());
 	}
 	
+	/**
+	 * Method to create the window
+	 * @param horizontalPosition the horizontal position of the state
+	 */
 	private void initialize(double horizontalPosition) {
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -341,6 +362,10 @@ public class StateCreator extends JFrame {
 		buttonToSpinner.put(btnZAxisEdit, spinnerZValue);
 	}
 	
+	/**
+	 * Enable an axis in the state
+	 * @param chckbx the CheckBox corresponding to the axis
+	 */
 	private void enableAxis(JCheckBox chckbx) {
 		boolean enable = chckbx.isSelected();
 		for(JSpinner spinner : checkboxToSpinner.get(chckbx)) {
@@ -348,6 +373,10 @@ public class StateCreator extends JFrame {
 		}
 	}
 	
+	/**
+	 * Create a FuzzyPoint based on parameters present in the interface
+	 * @return the created FuzzyPoint
+	 */
 	private FuzzyPoint createFuzzyPoint() {
 		FuzzyPoint p = new FuzzyPoint();
 		
@@ -367,12 +396,21 @@ public class StateCreator extends JFrame {
 		return p;
 	}
 	
+	/**
+	 * Create a FuzzyNumber based on the values on the input elements
+	 * @param value element containing the FuzzyNumber's value
+	 * @param error element containing the FuzzyNumber's error value
+	 * @return the created FuzzyNumber
+	 */
 	private FuzzyNumber getFuzzyNumberFromValue(Object value, Object error) {
 		return new FuzzyNumber(
 			value instanceof Integer ? (int) value : (double) value, 
 			error instanceof Integer ? (int) error : (double) error);
 	}
 	
+	/**
+	 * Method to update the images of the MainWindow's GraphingCanvas
+	 */
 	private void updateImage() {
 		StateImage img = canvas.getSimage(); 
 		img.setTemporary(createFuzzyPoint());
@@ -380,6 +418,9 @@ public class StateCreator extends JFrame {
 		canvas.paintComponent(canvas.getGraphics());
 	}
 	
+	/**
+	 * Method to save a temporary point into the set of points
+	 */
 	private void savePoint() {
 		StateImage img = canvas.getSimage();
 		Object value = spinnerIndex.getValue();
@@ -389,11 +430,19 @@ public class StateCreator extends JFrame {
 		this.dispose();
 	}
 	
+	/**
+	 * Method to delete the temporary point
+	 */
 	private void removePoint() {
 		canvas.getSimage().setTemporary(null);
 		this.dispose();
 	}
 	
+	/**
+	 * Method to set the selected spinner value
+	 * @param button the button to which the spinner is related to
+	 * @param e MouseEvent
+	 */
 	private void addPointElement(JButton button, MouseEvent e) {
 		double height = canvas.getHeight();
 		double value = ((height - canvas.getSavedMouseYLocation()) / height) * 100;
